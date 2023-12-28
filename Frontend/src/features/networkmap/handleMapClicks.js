@@ -2,7 +2,8 @@
 async function handleSubmitMap(name, setIsLoadingMap, setMapToPlot, setLabelPlot, setNodeType, selectedDirectionOption) {
 
   setIsLoadingMap(true);
-  const fullUrl = `http://localhost:3500/files/data/network/size/${name}`;
+  const fullUrl = process.env.REACT_APP_BASE_URL + "/files/data/network/size/" +name
+  //const fullUrl = `http://localhost:3500/files/data/network/size/${name}`;
 
   fetch(fullUrl)
     .then((res) => res.json())
@@ -52,7 +53,9 @@ async function handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
     setFirstOption([])
     setSecondOption([])
 
-    fetch(`http://localhost:3500/files/data/network/input/${mapPlot["filename"]}/${mapPlot["direction"]}/${clickedNode.id - 1}`)
+    let fullUrl= process.env.REACT_APP_BASE_URL + "/files/data/network/input/" + mapPlot["filename"] + "/"+ mapPlot["direction"] +"/"+ (clickedNode.id - 1)
+    //fetch(`http://localhost:3500/files/data/network/input/${mapPlot["filename"]}/${mapPlot["direction"]}/${clickedNode.id - 1}`)
+    fetch(fullUrl)
       .then(response => response.json())
       .then(data => {
         //sets vector options received from backend

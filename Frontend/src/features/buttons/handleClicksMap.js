@@ -88,7 +88,9 @@ async function handleSubmit(dataBuffer, setPlot, setisLoadingSubmit) {
   for (let i = 0; i < dataBuffer.length; i++) {
 
 
-    url[i] = `http://localhost:3500/files/data/network/${dataBuffer[i]["filename"]}/${dataBuffer[i]["direction"]}/${dataBuffer[i]["node"]}/${dataBuffer[i]["vector"]}/${dataBuffer[i]["parameter"]}/`;
+    url[i]= process.env.REACT_APP_BASE_URL + "/files/data/network/" + dataBuffer[i]["filename"] + "/"+ dataBuffer[i]["direction"] + "/" +dataBuffer[i]["node"] + "/" + dataBuffer[i]["vector"]  + "/" +dataBuffer[i]["parameter"] + "/" 
+
+   // url[i] = `http://localhost:3500/files/data/network/${dataBuffer[i]["filename"]}/${dataBuffer[i]["direction"]}/${dataBuffer[i]["node"]}/${dataBuffer[i]["vector"]}/${dataBuffer[i]["parameter"]}/`;
 
 
 

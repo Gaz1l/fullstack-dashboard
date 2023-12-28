@@ -3,7 +3,9 @@ async function handleTransponderInputChange(event, name, setTransponderDirection
 
   setTransponderDirection(event);    //sets direction selected
 
-  fetch(`http://localhost:3500/files/data/network/transponder/${name}/${event}`)
+  let fullUrl= process.env.REACT_APP_BASE_URL + "/files/data/network/transponder/" + name + "/"+  event 
+  //fetch(`http://localhost:3500/files/data/network/transponder/${name}/${event}`)
+  fetch(fullUrl)
     .then(response => response.json())
     .then(data => {
 

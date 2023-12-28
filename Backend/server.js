@@ -24,7 +24,7 @@ const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
 
 //Server port - 3500 
-const PORT = process.env.PORT || 3500
+const PORT = process.env.PORT
 
 //Middleware for file uploading and destination folder 
 const multer = require('multer');

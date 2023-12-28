@@ -123,7 +123,7 @@ const Transponder = () => {
 
   //get nws names when initilializing , deleting or uploading through get request (fetch)
   useEffect(() => {
-    fetch("http://localhost:3500/files/")
+    fetch(process.env.REACT_APP_BASE_URL + "/files/")
       .then((res) => res.json())
       .then((data) => {
 

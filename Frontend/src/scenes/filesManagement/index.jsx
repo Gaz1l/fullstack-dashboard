@@ -20,6 +20,7 @@ import Header from "../../components/Header";
 import { handleName, handleFileChange, handleFileUpload, handleDelete } from "../../features/filemanagement/handleFiles";
 
 
+
 const FileManager = () => {
 
   const [name, setName] = React.useState('');           //id nw selected on dropdown
@@ -29,13 +30,15 @@ const FileManager = () => {
   const [emptyArray, setEmptyArray] = useState(true);     //flag of no files in db 
 
 
+
   //get nws names when initilializing , deleting or uploading through get request (fetch)
   useEffect(() => {
-    fetch("http://localhost:3500/files/")
+    fetch(process.env.REACT_APP_BASE_URL + "/files/")
       .then((res) => res.json())
       .then((data) => {
         //sets ids and names of nws in db received from backend
         setNetworks(data);
+        
         //Check if there are no files in db and sets flag
         if (data.length !== 0 && data.length !== undefined) {
 

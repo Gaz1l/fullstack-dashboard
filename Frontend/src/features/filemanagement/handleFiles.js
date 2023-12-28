@@ -41,7 +41,7 @@ async function handleFileUpload(selectedFile, setUpdateFlag) {
 
         //valid file uploaded with POST method to db 
 
-        fetch('http://localhost:3500/files', {
+        fetch(process.env.REACT_APP_BASE_URL + "/files/", {
             method: 'POST',
             body: formData,
         })
@@ -91,7 +91,8 @@ async function handleDelete(name, setName, setUpdateFlag) {
     else {
 
         //delete method to url 
-        const url = `http://localhost:3500/files/data/delete/${name}/`;
+        const url = process.env.REACT_APP_BASE_URL + "/files/data/delete/" + name + "/"
+        //const url = `http://localhost:3500/files/data/delete/${name}/`;
 
         fetch(url, {
             method: 'DELETE',
