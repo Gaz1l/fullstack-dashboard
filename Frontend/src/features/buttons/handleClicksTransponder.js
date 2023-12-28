@@ -76,7 +76,7 @@ async function handleSubmit(dataBuffer, setPlot, setisLoadingSubmit, setrlTransp
   //creating each url to communicate 
   for (let i = 0; i < dataBuffer.length; i++) {
 
-    url[i]= process.env.REACT_APP_BASE_URL + "/files/data/network/" + dataBuffer[i]["filename"] + "/"+ dataBuffer[i]["direction"] + "/" +dataBuffer[i]["parameter"] + "/" 
+    url[i]= process.env.REACT_APP_BASE_URL + "/files/data/" + dataBuffer[i]["filename"] + "/"+ dataBuffer[i]["direction"] + "/" +dataBuffer[i]["parameter"] + "/" 
 
     //url[i] = `http://localhost:3500/files/data/${dataBuffer[i]["filename"]}/${dataBuffer[i]["direction"]}/${dataBuffer[i]["parameter"]}/`;
 
