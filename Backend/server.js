@@ -28,7 +28,7 @@ const PORT = process.env.PORT
 
 //Middleware for file uploading and destination folder 
 const multer = require('multer');
-const upload = multer({ dest: '/files' });
+const upload = multer({ dest: './files' });
 
 
 //console.log(process.env.NODE_ENV)

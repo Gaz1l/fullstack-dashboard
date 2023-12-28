@@ -61,7 +61,7 @@ const getMap = asyncHandler(async (req, res) => {
 // Create new File
 // @route POST /files/
 const createNewFile = asyncHandler(async (req, res) => {
-
+   
     //get file from POST 
     const uploadedFile = req.file;
     const network = uploadedFile.originalname
@@ -379,6 +379,7 @@ const createNewFile = asyncHandler(async (req, res) => {
 
             //Check if file already exists
             const query = Log.findOne({ network: network });
+
 
             query
                 .then(result => {
