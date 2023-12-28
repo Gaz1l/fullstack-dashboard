@@ -61,7 +61,7 @@ const getMap = asyncHandler(async (req, res) => {
 // Create new File
 // @route POST /files/
 const createNewFile = asyncHandler(async (req, res) => {
-   
+
     //get file from POST 
     const uploadedFile = req.file;
     const network = uploadedFile.originalname
@@ -371,7 +371,12 @@ const createNewFile = asyncHandler(async (req, res) => {
 
 
 
-
+            // Delete the file after reading
+            fs.unlink(uploadedFile.path, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                }
+            });
 
 
 
