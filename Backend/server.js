@@ -23,8 +23,9 @@ const corsOptions = require('./config/corsOptions')
 const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
 
-//Server port - 3500 
-const PORT = process.env.PORT
+
+
+
 
 //Middleware for file uploading and destination folder 
 const multer = require('multer');
@@ -33,7 +34,10 @@ const upload = multer({ dest: './files' });
 
 //console.log(process.env.NODE_ENV)
 
+app.set('trust proxy', true);
 
+//Server port - 3500 
+const PORT = process.env.PORT
 
 //Database connection 
 connectDB()
