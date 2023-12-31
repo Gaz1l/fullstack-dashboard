@@ -60,7 +60,6 @@ const refresh = (req, res) => {
 
     const cookies = req.cookies
 
-    console.log(cookies)
     //checks if cookie is received/exists
     if (!cookies?.jwt) return res.status(401).json({ message: 'Invalid Cookie' })
 
