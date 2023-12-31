@@ -5,6 +5,11 @@ const router = express.Router()
 //functions to call in the routes 
 const filesController = require('../controllers/filesController')
 
+//Middleware to verify tokens in all routes 
+const verifyToken = require('../middleware/verifyTokens')
+router.use(verifyToken.verifyToken)
+
+
 //Routes - /files
 
 // "/files/"

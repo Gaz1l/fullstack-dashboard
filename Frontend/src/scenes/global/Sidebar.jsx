@@ -16,6 +16,7 @@ import MapIcon from '@mui/icons-material/Map';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 //Sidebar item 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -121,7 +122,7 @@ const Sidebar = () => {
               <Box paddingLeft={isCollapsed ? undefined : "10%"}>
                 <Item
                   title="Dashboard"
-                  to="/"
+                  to="/homepage"
                   icon={<HomeOutlinedIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -129,7 +130,7 @@ const Sidebar = () => {
                 {/*FILE MANAGEMENT OPTION*/}
                 <Item
                   title="File Management"
-                  to="/files"
+                  to="/homepage/files"
                   icon={<UploadFileIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -138,7 +139,7 @@ const Sidebar = () => {
                 {/*NETWORK MAP OPTION*/}
                 <Item
                   title="Network Map"
-                  to="/network"
+                  to="/homepage/network"
                   icon={<MapIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -147,7 +148,7 @@ const Sidebar = () => {
                 {/*TRANSPONDER DATA OPTION*/}
                 <Item
                   title="Transponder Data"
-                  to="/transponder"
+                  to="/homepage/transponder"
                   icon={<QueryStatsIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -157,7 +158,7 @@ const Sidebar = () => {
                 <Item
 
                   title="Settings"
-                  to="/settings"
+                  to="/homepage/settings"
                   icon={<SettingsIcon />}
                   selected={selected}
                   setSelected={setSelected}
@@ -167,8 +168,17 @@ const Sidebar = () => {
                 {/*GUIDE OPTION*/}
                 <Item
                   title="How To Use"
-                  to="/guide"
+                  to="/homepage/guide"
                   icon={<HelpCenterIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                  {/*LOGOUT OPTION*/}
+                  <Item
+                  title="Logout"
+                  to="/logout"
+                  icon={<LogoutIcon />}
                   selected={selected}
                   setSelected={setSelected}
                 />

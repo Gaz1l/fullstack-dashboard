@@ -8,7 +8,7 @@ body,
 .app,
 .content {
   height: 100%;
-  width: 100%;
+  width: 99%;
   font-family: "Source Code Pro", sans-serif;
 }
 
@@ -16,6 +16,8 @@ body,
   display: flex;
   position: relative;
 }
+
+
 
 ::-webkit-scrollbar {
   width: 10px;

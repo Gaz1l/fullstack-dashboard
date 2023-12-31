@@ -3,21 +3,16 @@ import { Routes, Route } from 'react-router-dom'
 import Box from '@mui/material/Box';
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
-//Contexts 
+//Contexts - theme and nav mode 
 import { ColorModeContext, useMode, useNav, NavComContext } from "./theme";
 
 //Components 
-import Sidebar from "./scenes/global/Sidebar";
-import Dashboard from "./scenes/dashboard/index";
-import FileManager from "./scenes/filesManagement/index"
-import NetworkMap from "./scenes/networkMap/index"
-import TransponderData from './scenes/transponderData/index';
-import Settings from './scenes/settings';
-import Guide from './scenes/guide';
+import Logout from './scenes/logout';
+import Login from './scenes/login/index'
+import Home from './Home';
+import Signup from './scenes/signup';
 
-
-
-
+//App routes - homepage/login/logout/signup 
 function App() {
   const [theme, colorMode] = useMode();
   const [navMode] = useNav();
@@ -32,19 +27,16 @@ function App() {
 
           {/*FULL PAGE BOX */}
           <Box className="app" style={{ overflow: "hidden" }}>
-            <Sidebar isSidebar={true} />
+
             <main className="content" >
 
-
               {/*MAIN AREA BOX AND PATHS*/}
-              <Box style={{ paddingTop: "5vh", height: "100vh", overflow: "auto" }}>
+              <Box style={{ width: "100vw", height: "100vh", overflow: "auto" }}>
                 <Routes >
-                  <Route path="/" element={<Dashboard />} />
-                  <Route path="/files" element={<FileManager />} />
-                  <Route path="/network" element={<NetworkMap />} />
-                  <Route path="/transponder" element={<TransponderData />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/guide" element={<Guide />} />
+                  <Route path="/" element={<Login />} />
+                  <Route path="/homepage/*" element={<Home />} />
+                  <Route path="/logout" element={<Logout />} />
+                  <Route path="/signup" element={<Signup />} />
                 </Routes>
               </Box>
 

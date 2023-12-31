@@ -9,6 +9,8 @@ var nj = require('numjs');
 
 //File system functions
 const fs = require('fs');
+const path = require('path');
+const folderPath = "../Backend/files";
 
 
 
@@ -76,6 +78,7 @@ const createNewFile = asyncHandler(async (req, res) => {
     let backward_node_type = []
     let backward_label_plot = []
     let arrayx
+
 
     //read file 
     fs.readFile(uploadedFile.path, 'utf8', (err, rcv) => {
@@ -369,18 +372,43 @@ const createNewFile = asyncHandler(async (req, res) => {
             }
 
 
-
-
-            // Delete the file after reading
-            fs.unlink(uploadedFile.path, (err) => {
-                if (err) {
-                    console.error('Error deleting file:', err);
-                }
-            });
+    
 
 
 
 
+
+
+
+
+
+
+
+        }
+    });
+
+
+    //delete file 
+    fs.readdir(folderPath, (err, files) => {
+        if (err) {
+          console.error('Error reading folder:', err);
+          return;
+        }
+      
+        // Iterate through each file in the folder
+        files.forEach((file) => {
+          const filePath = path.join(folderPath, file);
+      
+          // Delete the file
+          fs.unlink(filePath, (err) => {
+            if (err) {
+              console.error('Error deleting file:', err);
+            } else {
+              console.log('File deleted:', filePath);
+            }
+          });
+        });
+      });
 
             //Check if file already exists
             const query = Log.findOne({ network: network });
@@ -404,16 +432,6 @@ const createNewFile = asyncHandler(async (req, res) => {
                         }
                     }
                 })
-
-
-
-
-
-
-        }
-    });
-
-
 
 
 

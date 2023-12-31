@@ -1,11 +1,13 @@
+//Mongo db model 
 const mongoose = require('mongoose')
 
+//User Model schema - blueprint 
 const userSchema = new mongoose.Schema({
-    username: {
+    username: {   //user name 
         type: String,
         required: true
     },
-    password: {
+    password: {         //password
         type: String,
         required: true
     },

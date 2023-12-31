@@ -28,6 +28,9 @@ import { handlePopUpNetworkBox } from "../features/popup/handlePopUp";
 import { convertMapData } from "../data/dataConversor";
 
 
+
+
+
 const Network = () => {
 
   //Use effect
@@ -69,8 +72,72 @@ const Network = () => {
 
   //get nws names when initilializing , deleting or uploading through get request (fetch)
   useEffect(() => {
-    fetch(process.env.REACT_APP_BASE_URL + "/files/")
-      .then((res) => res.json())
+    fetch(process.env.REACT_APP_BASE_URL + "/files/", {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,
+      },
+    })
+    .then(async (res) => {
+      if (res.ok) {
+        // If the response status is OK, proceed with parsing the JSON
+        return res.json();
+      } else if (res.status === 403) {
+        // Unauthorized: Access token is likely expired
+        // refresh token
+        console.log("Token expired, initiate token refresh");
+        try {
+          const response = await fetch(process.env.REACT_APP_BASE_URL+ "/auth/refresh", {
+            method: 'GET',
+            credentials: 'include', // Include credentials to send cookies
+          });
+          if (response.ok) {
+            // If the refresh is successful, extract the new access token from the response
+            const data = await response.json();
+            sessionStorage.setItem('accessToken', data.accessToken);
+            console.log('Access token refreshed successfully',data);
+           
+           
+            try {
+              const responses = await fetch(process.env.REACT_APP_BASE_URL + "/files/", {
+                method: 'GET',
+                headers: {
+                  'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,
+                },
+              });
+              if (responses.ok) {
+                // If the refresh is successful, extract the new access token from the response
+                const datas = await responses.json();
+  
+                return datas;
+               
+               
+  
+               
+              }} catch (error) {
+                // Handle unexpected errors during token refresh
+                console.error('Unexpected error during token refresh', error);
+                // Handle logout or redirect to login page
+              }
+              }
+            }catch (error) {
+              // Handle unexpected errors during token refresh
+              console.error('Unexpected error during token refresh', error);
+              // Handle logout or redirect to login page
+            } 
+
+          }
+          
+
+      
+     
+       
+       else {
+        // Handle other HTTP status codes as needed
+        console.log("Other error:", res.status);
+        throw new Error("Other error");
+      }
+    })
       .then((data) => {
         //sets ids and names of nws in db received from backend
         setNetworks(data);

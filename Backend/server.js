@@ -50,8 +50,9 @@ app.use(cookieParser())         //cookie parser middleware
 
 
 //routes/endpoints 
-app.use('/users', require('./routes/userRoutes'))
-app.use('/files', upload.single('file'), require('./routes/fileRoutes'))  //allows uploads 
+app.use('/auth', require('./routes/authRoutes')) //authentication routes 
+app.use('/users', require('./routes/userRoutes')) //user routes 
+app.use('/files', upload.single('file'), require('./routes/fileRoutes'))  //files routes allows uploads 
 
 
 //error/ not found  routes 
