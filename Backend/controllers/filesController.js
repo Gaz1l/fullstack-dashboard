@@ -595,7 +595,7 @@ const createNewFile = asyncHandler(async (req, res) => {
                 //Creates file model if new one 
 
                 //Missing data in json 
-                if (!network || network.trim() === "" || Object.keys(data).length === 0 || forward_path.length === 0 || backward_path.length === 0 || forward_label_plot.length === 0 || backward_label_plot.length === 0 || forward_node_type.length === 0 || backward_node_type.length === 0) {
+                if (!network || network.trim() === "" || forward_path.length === 0 || backward_path.length === 0 || forward_label_plot.length === 0 || backward_label_plot.length === 0 || forward_node_type.length === 0 || backward_node_type.length === 0) {
                     const error = new Error('Missing Data in JSON');
 
                     logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
