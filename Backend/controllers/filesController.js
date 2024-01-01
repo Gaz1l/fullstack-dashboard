@@ -270,7 +270,7 @@ const createNewFile = asyncHandler(async (req, res) => {
                 }
                 //Fiber
                 // Check if "Node" appears at least twice
-                else if (str.indexOf("Node") !== -1 && str.indexOf("Node", str.indexOf("Node") + 1) !== -1) {
+                else if (forward_path[i].indexOf("Node") !== -1 && forward_path[i].indexOf("Node", forward_path[i].indexOf("Node") + 1) !== -1) {
 
 
                     forward_node_type[i] = "Fiber"
