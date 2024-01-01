@@ -1,14 +1,10 @@
 //Components
 import Header from '../../components/Header';
-import { useContext } from "react";
 import Box from '@mui/material/Box';
-import { Typography, IconButton, useTheme } from "@mui/material";
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 //Contexts
-import { ColorModeContext, NavComContext } from "../../theme";
 import { useState } from 'react';
-import { ReportRounded } from '@mui/icons-material';
 //Icons
 
 
@@ -23,11 +19,12 @@ const ErrorManager = () => {
 
         console.log(reportMessage)
         try {
-            // Send a request to backend to authenticate 
+            // Send a request to backend to create request 
             await fetch(process.env.REACT_APP_BASE_URL + "/report/", {
                 method: 'POST',
                 body: JSON.stringify({ reportMessage }),
-                headers: {'Content-Type': 'application/json',
+                headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,
                 },
             })
@@ -57,7 +54,8 @@ const ErrorManager = () => {
                                         const responses = await fetch(process.env.REACT_APP_BASE_URL + "/report/", {
                                             method: 'POST',
                                             body: JSON.stringify({ reportMessage }),
-                                            headers: {'Content-Type': 'application/json',
+                                            headers: {
+                                                'Content-Type': 'application/json',
                                                 'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,
                                             },
                                         })
@@ -106,7 +104,7 @@ const ErrorManager = () => {
         }
     };
 
-
+    /*MAIN BOX - CONTAINS ALL REPORT SUBMITION COMPONENTS */
     return (
 
         <Box sx={{
@@ -115,9 +113,10 @@ const ErrorManager = () => {
         }} >
 
 
-
+            {/* HEADER */}
             <Header title="Report Error" subtitle="Give your feeback" />
 
+            {/*ONE COLUMN GRID BOX - COINTAINING REPORT INPUT AND SUBMIT BUTTON*/}
 
             <Box sx={{
                 width: "50%",

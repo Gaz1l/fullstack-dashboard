@@ -1,13 +1,13 @@
 const { logEvents } = require('../middleware/logger');
-//model and imports to decrypt password and webtoken 
+//model and date imports
 const Report = require('../models/Report')
 const asyncHandler = require('express-async-handler')
 const { format } = require('date-fns')
 
 
 
-// Create new user
-// @route POST /users
+// Create new report
+// @route POST /report/
 const createNewReport = asyncHandler(async (req, res) => {
 
    
@@ -24,11 +24,12 @@ const createNewReport = asyncHandler(async (req, res) => {
         return res.status(400).json({ message: 'All fields are required' })
     }
 
+    //get data and time 
     const date = format(new Date(), 'yyyyMMdd\tHH:mm:ss')
 
     const reportObject = { message:reportMessage, date }
 
-    // Create and store new user 
+    // Create and store new report object 
     const report = await Report.create(reportObject)
 
     if (report) { //created 

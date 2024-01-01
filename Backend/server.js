@@ -55,7 +55,7 @@ app.use(errorHandler)  //error middleware
 //routes/endpoints 
 app.use('/auth', require('./routes/authRoutes')) //authentication routes 
 app.use('/users', require('./routes/userRoutes')) //user routes
-app.use('/report', require('./routes/reportRoutes')) //user routes 
+app.use('/report', require('./routes/reportRoutes')) //report routes 
 app.use('/files', upload.single('file'), require('./routes/fileRoutes'))  //files routes allows uploads 
 
 

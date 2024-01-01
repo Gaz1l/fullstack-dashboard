@@ -7,9 +7,9 @@ const reportController = require('../controllers/reportController')
 
 
 
-//Routes - /users
+//Routes - /report
 // create new user
-router.route('/')   //already at users
+router.route('/')   //already at report
     .post(reportController.createNewReport)
 
 
