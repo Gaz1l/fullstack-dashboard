@@ -79,7 +79,7 @@ const createNewFile = asyncHandler(async (req, res) => {
     const network = uploadedFile.originalname
 
     //Buffers 
-    let data
+    let data = {}
     let forward_path
     let backward_path
     let labelBuffer
@@ -102,7 +102,7 @@ const createNewFile = asyncHandler(async (req, res) => {
         } else {
             //data in the json file
             data = JSON.parse(rcv);
-
+            console.log(data)
             //No data or file name 
             if (!network || !data) {
                 const error = new Error('All fields are required');
@@ -602,7 +602,7 @@ const createNewFile = asyncHandler(async (req, res) => {
                     console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
                     return res.status(401).json({ message: 'Missing Data in JSON' })
                 }*/
-                const File = Log.create({ network, data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
+                const File = Log.create({ network, data: data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
 
                 console.log("Created!")
                 if (File) { // Created 

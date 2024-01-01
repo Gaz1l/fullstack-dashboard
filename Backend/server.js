@@ -23,9 +23,9 @@ const corsOptions = require('./config/corsOptions')
 const connectDB = require('./config/dbConn')
 const mongoose = require('mongoose')
 
+const bodyParser = require("body-parser")
 
-
-
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //Middleware for file uploading and destination folder 
 const multer = require('multer');
