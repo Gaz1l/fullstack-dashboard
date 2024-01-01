@@ -51,7 +51,7 @@ const login = async (req, res) => {
             }
         },
         process.env.ACCESS_TOKEN,
-        { expiresIn: '10s' }
+        { expiresIn: '10m' }
     )
 
     const refreshToken = jwt.sign(
@@ -123,7 +123,7 @@ const refresh = (req, res) => {
                     }
                 },
                 process.env.ACCESS_TOKEN,
-                { expiresIn: '10s' }
+                { expiresIn: '10m' }
             )
             //new access token sent 
             res.json({ accessToken })
