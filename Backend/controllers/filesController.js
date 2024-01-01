@@ -457,7 +457,7 @@ const createNewFile = asyncHandler(async (req, res) => {
                 }
                                 //Fiber
                 // Check if "Node" appears at least twice
-                else if (str.indexOf("Node") !== -1 && str.indexOf("Node", str.indexOf("Node") + 1) !== -1) {
+                else if (backward_path[i].indexOf("Node") !== -1 && backward_path[i].indexOf("Node", backward_path[i].indexOf("Node") + 1) !== -1) {
                     backward_node_type[i] = "Fiber"
 
                     let subsubstring = backward_path[i].split('Node');
