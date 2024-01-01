@@ -1,3 +1,4 @@
+const { logEvents } = require('../middleware/logger');
 //File model from DB - Log 
 const Log = require('../models/File')
 
@@ -22,6 +23,11 @@ const getAllFiles = asyncHandler(async (req, res) => {
 
     // If no Files 
     if (!Files?.length) {
+        const error = new Error('No Files found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+
         return res.status(400).json({ message: 'No Files found' })
     }
 
@@ -40,6 +46,10 @@ const getMap = asyncHandler(async (req, res) => {
 
     //If file does not exist 
     if (!File) {
+        const error = new Error('File not found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File not found' })
     }
 
@@ -84,7 +94,10 @@ const createNewFile = asyncHandler(async (req, res) => {
     fs.readFile(uploadedFile.path, 'utf8', (err, rcv) => {
         //Error reading 
         if (err) {
-            console.error('Error reading the file:', err);
+            const error = new Error('Error reading the file');
+
+            logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+            console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
             res.status(500).json({ error: 'Error reading the file' });
         } else {
             //data in the json file
@@ -92,13 +105,44 @@ const createNewFile = asyncHandler(async (req, res) => {
 
             //No data or file name 
             if (!network || !data) {
+                const error = new Error('All fields are required');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
                 return res.status(400).json({ message: 'All fields are required' })
+            }
+            if (!data.hasOwnProperty("Tasks")) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
             }
 
             //access and save paths (forward and backward) - containing names of the nodes 
             x = data["Tasks"]
+
+
+            if (!x.hasOwnProperty("Signal_Propagation")) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
+
+
             x = x["Signal_Propagation"]
             x = Object.entries(x)            //convert to array format 
+
+            // Check if the array has enough elements
+            if (x.length < 2) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
             y = x[0][1]
             z = x[1][1]
 
@@ -113,14 +157,37 @@ const createNewFile = asyncHandler(async (req, res) => {
 
             //Get node name in appropriate format for each node  
             //Get each node type 
+            if (!data.hasOwnProperty("Tasks")) {
+                const error = new Error('Missing Data in JSON');
 
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
             //Forward path 
             x = data["Tasks"]
+
+            if (!x.hasOwnProperty("Signal_Propagation")) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
+
+
             x = x["Signal_Propagation"]
+
             x = Object.entries(x)            //convert to array 
+            if (x.length < 1) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
             x = x[0][1];              // x["Node_1_to_Node_6"]
             arrayx = Object.entries(x)    //convert to array 
-
 
 
             for (let i = 0; i < forward_path.length; i++) {
@@ -193,17 +260,28 @@ const createNewFile = asyncHandler(async (req, res) => {
                             forward_path[i] = `${substring[0]} ${substring[1]} EDFA In Line `
 
                         }
-                    };
+                    }
+                    //None
+                    else {
+                        forward_node_type[i] = "No description"
+                        forward_path[i] = `${substring[0]} ${substring[1]} No description `
+                    }
 
                 }
                 //Fiber
-                else {
+                // Check if "Node" appears at least twice
+                else if (str.indexOf("Node") !== -1 && str.indexOf("Node", str.indexOf("Node") + 1) !== -1) {
+
 
                     forward_node_type[i] = "Fiber"
 
                     let subsubstring = forward_path[i].split('Node');
                     forward_path[i] = `${subsubstring[0].split('_')[0]} Node ${subsubstring[1].split('_')[1]} To ${subsubstring[2].split('_')[1]}`
 
+                }
+                else {
+                    forward_node_type[i] = "Undefined"
+                    forward_path[i] = "Undefined"
                 }
 
             }
@@ -214,15 +292,39 @@ const createNewFile = asyncHandler(async (req, res) => {
             //Get labels - static info when hovering the node - forward path 
             for (let i = 0; i < arrayx.length - 1; i++) {
 
+                if (!arrayx[i][1].hasOwnProperty("Generic")) {
+                    const error = new Error('Missing Data in JSON');
+
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(401).json({ message: 'Missing Data in JSON' })
+                }
+
                 //Access generic data of the node (static data) and convert to string 
                 labelBuffer = arrayx[i][1]["Generic"]
                 labelBuffer = JSON.stringify(labelBuffer)
 
+                if (!arrayx[i][1].hasOwnProperty("portConnections")) {
+                    const error = new Error('Missing Data in JSON');
+
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(401).json({ message: 'Missing Data in JSON' })
+                }
 
 
                 //Access port connections to check for other static data 
                 staticBuffer = arrayx[i][1]["portConnections"]
                 staticBuffer = Object.entries(staticBuffer)    //convert to array 
+
+                if (staticBuffer.length === 0) {
+                    const error = new Error('Missing Data in JSON');
+
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(401).json({ message: 'Missing Data in JSON' })
+                }
+
                 staticBuffer = Object.entries(staticBuffer[0][1])
                 for (const [label, obj] of staticBuffer) {
 
@@ -256,9 +358,36 @@ const createNewFile = asyncHandler(async (req, res) => {
             //Get each node type 
 
             //Backward path  
+
+            if (!data.hasOwnProperty("Tasks")) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
+
             x = data["Tasks"]
+
+            if (!x.hasOwnProperty("Signal_Propagation")) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
+
+
             x = x["Signal_Propagation"]
             x = Object.entries(x)            //converte para array 
+
+            if (x.length < 1) {
+                const error = new Error('Missing Data in JSON');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(401).json({ message: 'Missing Data in JSON' })
+            }
 
             x = x[1][1];              //acede a x["Node_6_to_Node_1"]
             arrayx = Object.entries(x)    //converte para array 
@@ -319,9 +448,16 @@ const createNewFile = asyncHandler(async (req, res) => {
                             backward_path[i] = `${substring[0]} ${substring[1]} EDFA In Line `
                         }
                     }
+                    //None
+                    else {
+                        backward_node_type[i] = "No description"
+                        backward_path[i] = `${substring[0]} ${substring[1]} No description `
+                    }
 
                 }
-                else {
+                                //Fiber
+                // Check if "Node" appears at least twice
+                else if (str.indexOf("Node") !== -1 && str.indexOf("Node", str.indexOf("Node") + 1) !== -1) {
                     backward_node_type[i] = "Fiber"
 
                     let subsubstring = backward_path[i].split('Node');
@@ -330,21 +466,45 @@ const createNewFile = asyncHandler(async (req, res) => {
                     backward_path[i] = `${subsubstring[0].split('_')[0]} Node ${subsubstring[1].split('_')[1]} To ${subsubstring[2].split('_')[1]}`
 
                 }
+                else {
+                    backward_node_type[i] = "Undefined"
+                    backward_path[i] = "Undefined"
+                }
 
             }
 
 
             //Get labels - static info when hovering the node - backward path 
             for (let i = 0; i < arrayx.length - 1; i++) {
+                if (!arrayx[i][1].hasOwnProperty("Generic")) {
+                    const error = new Error('Missing Data in JSON');
 
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(401).json({ message: 'Missing Data in JSON' })
+                }
                 labelBuffer = arrayx[i][1]["Generic"]
                 labelBuffer = JSON.stringify(labelBuffer)
 
+                if (!arrayx[i][1].hasOwnProperty("portConnections")) {
+                    const error = new Error('Missing Data in JSON');
 
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(401).json({ message: 'Missing Data in JSON' })
+                }
 
 
                 staticBuffer = arrayx[i][1]["portConnections"]
                 staticBuffer = Object.entries(staticBuffer)
+
+                if (staticBuffer.length === 0) {
+                    const error = new Error('Missing Data in JSON');
+
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(401).json({ message: 'Missing Data in JSON' })
+                }
                 staticBuffer = Object.entries(staticBuffer[0][1])
                 for (const [label, obj] of staticBuffer) {
 
@@ -372,7 +532,7 @@ const createNewFile = asyncHandler(async (req, res) => {
             }
 
 
-    
+
 
 
 
@@ -391,47 +551,70 @@ const createNewFile = asyncHandler(async (req, res) => {
     //delete file 
     fs.readdir(folderPath, (err, files) => {
         if (err) {
-          console.error('Error reading folder:', err);
-          return;
+            const error = new Error('Error reading folder:', err);
+
+            logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+            console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+
+            return;
         }
-      
+
         // Iterate through each file in the folder
         files.forEach((file) => {
-          const filePath = path.join(folderPath, file);
-      
-          // Delete the file
-          fs.unlink(filePath, (err) => {
-            if (err) {
-              console.error('Error deleting file:', err);
-            } else {
-              console.log('File deleted:', filePath);
-            }
-          });
+            const filePath = path.join(folderPath, file);
+
+            // Delete the file
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    const error = new Error('Error deleting file:', err);
+
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+
+                } else {
+                    console.log('File deleted:', filePath);
+                }
+            });
         });
-      });
+    });
 
-            //Check if file already exists
-            const query = Log.findOne({ network: network });
+    //Check if file already exists
+    const query = Log.findOne({ network: network });
 
 
-            query
-                .then(result => {
-                    if (result) {
-                        //Error if duplicate file
+    query
+        .then(result => {
+            if (result) {
+                //Error if duplicate file
+                const error = new Error('Duplicate File title');
 
-                        return res.status(409).json({ message: 'Duplicate File title' })
-                    } else {
-                        //Creates file model if new one 
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(409).json({ message: 'Duplicate File title' })
+            } else {
+                //Creates file model if new one 
 
-                        const File = Log.create({ network, data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
+                //Missing data in json 
+                if (!network || network.trim() === "" || Object.keys(data).length === 0 || forward_path.length === 0 || backward_path.length === 0 || forward_label_plot.length === 0 || backward_label_plot.length === 0 || forward_node_type.length === 0 || backward_node_type.length === 0) {
+                    const error = new Error('Missing Data in JSON');
 
-                        if (File) { // Created 
-                            return res.status(201).json({ message: 'New File created' })
-                        } else {    //Invalid 
-                            return res.status(400).json({ message: 'Invalid File data received' })
-                        }
-                    }
-                })
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(401).json({ message: 'Missing Data in JSON' })
+                }
+                const File = Log.create({ network, data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
+
+                if (File) { // Created 
+                    return res.status(201).json({ message: 'New File created' })
+                } else {    //Invalid 
+                    const error = new Error('Invalid File data received');
+
+                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                    return res.status(400).json({ message: 'Invalid File data received' })
+                }
+            }
+        })
 
 
 
@@ -444,6 +627,10 @@ const deleteFile = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!req.params.filename) {
+        const error = new Error('File ID required');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File ID required' })
     }
 
@@ -452,6 +639,10 @@ const deleteFile = asyncHandler(async (req, res) => {
 
     //File not found
     if (!File) {
+        const error = new Error('File not found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File not found' })
     }
 
@@ -479,6 +670,10 @@ const getData = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!fileName || !direction || !parameter) {
+        const error = new Error('All fields are required');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -487,6 +682,10 @@ const getData = asyncHandler(async (req, res) => {
 
     //File does not exist 
     if (!File) {
+        const error = new Error('File not found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File not found' })
     }
 
@@ -642,6 +841,10 @@ const getNetworkData = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!filename || !direction || !node || !vector || !parameter) {
+        const error = new Error('All fields are required');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -650,6 +853,10 @@ const getNetworkData = asyncHandler(async (req, res) => {
 
     //File does not exist 
     if (!File) {
+        const error = new Error('File not found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File not found' })
     }
 
@@ -784,6 +991,10 @@ const getFirstInput = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!fileName || !direction) {
+        const error = new Error('All fields are required');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -792,6 +1003,10 @@ const getFirstInput = asyncHandler(async (req, res) => {
 
     //File does not exist 
     if (!File) {
+        const error = new Error('File not found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File not found' })
     }
 
@@ -882,6 +1097,10 @@ const getParams = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!fileName || !direction) {
+        const error = new Error('All fields are required');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -890,6 +1109,10 @@ const getParams = asyncHandler(async (req, res) => {
 
     //File does not exist 
     if (!File) {
+        const error = new Error('File not found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File not found' })
     }
 
@@ -1004,6 +1227,10 @@ const getTransponderParams = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!fileName || !direction) {
+        const error = new Error('All fields are required');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'All fields are required' })
     }
 
@@ -1012,6 +1239,10 @@ const getTransponderParams = asyncHandler(async (req, res) => {
 
     //File does not exist 
     if (!File) {
+        const error = new Error('File not found');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'File not found' })
     }
 

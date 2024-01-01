@@ -91,6 +91,10 @@ async function handleFileUpload(selectedFile, setUpdateFlag) {
                     alert("File Already Exists")
                     throw new Error('File Already Exists');
                   }
+                  else if(res.status ===401){
+                    alert("Missing Data")
+                    throw new Error("Missing Data");
+                  }
                   else {
                     // Other error 
                     alert(responses.status)
@@ -114,7 +118,10 @@ async function handleFileUpload(selectedFile, setUpdateFlag) {
             }
 
           }
-
+          else if(res.status ===401){
+            alert("Missing Data")
+            throw new Error("Missing Data");
+          }
           else {
             // Other error 
             alert(res.status)

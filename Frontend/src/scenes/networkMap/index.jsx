@@ -7,7 +7,7 @@ const NetworkMap = () => {
   /*NETWORK MAP PAGE BOX*/
   return (
 
-    <Box style={{ height: "100vh", width: "95vw" }}>
+    <Box style={{ height: "100vh", width: "100%" }}>
       <Network />
     </Box>
 

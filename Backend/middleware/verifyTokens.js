@@ -1,3 +1,4 @@
+const { logEvents } = require('../middleware/logger');
 //middleware to verify tokens when accessing endpoints 
 const jwt = require('jsonwebtoken')
 
@@ -7,6 +8,10 @@ const verifyToken = (req, res, next) => {
 
     //checks for valid authorization header with "Bearer "
     if (!authHeader?.startsWith('Bearer ')) {
+        const error = new Error('Invalid Message');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(401).json({ message: 'Invalid Message' })
     }
 
@@ -19,8 +24,13 @@ const verifyToken = (req, res, next) => {
         process.env.ACCESS_TOKEN,
         (err, decoded) => {
             //error - not valid 
-            if (err) return res.status(403).json({ message: 'Forbidden' })
-            
+            if (err) {
+                const error = new Error('Forbidden');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                return res.status(403).json({ message: 'Forbidden' })
+            }
             //valid - decodes data and proceeds 
             req.user = decoded.UserInfo.username
             next()
@@ -34,6 +44,10 @@ const verifyTokenOnAccess = (req, res, next) => {
 
     //checks for valid authorization header with "Bearer "
     if (!authHeader?.startsWith('Bearer ')) {
+        const error = new Error('Invalid Message');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(401).json({ message: 'Invalid Message' })
     }
 
@@ -46,11 +60,15 @@ const verifyTokenOnAccess = (req, res, next) => {
         process.env.ACCESS_TOKEN,
         (err, decoded) => {
             //error - not valid 
-            if (err) return res.status(403).json({ message: 'Forbidden' })
+            if (err){
+                const error = new Error('Forbidden');
+
+                logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                 return res.status(403).json({ message: 'Forbidden' })}
             if(!err)    res.status(200).json({ message: 'Endpoint accessed successfully' });
-            //valid - decodes data and proceeds 
-            req.user = decoded.UserInfo.username
-            next()
+
+           
         }
     )
 }

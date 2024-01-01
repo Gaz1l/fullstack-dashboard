@@ -6,7 +6,7 @@ const TransponderData = () => {
 
   /*TRANSPONDER PAGE BOX*/
   return (
-    <Box style={{ height: "100vh", width: "95vw" }}>
+    <Box style={{ height: "100vh", width: "100%" }}>
       <Transponder />
     </Box>
 

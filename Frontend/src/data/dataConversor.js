@@ -436,6 +436,27 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
 
 
     }
+    else{
+      tempN = {
+        id: node_tot + 1,
+        label: path_data[i],
+        title: label_data[i],
+        shape: 'box',
+        color: "red",
+        x: new_x,
+        y: new_y,
+
+        layout: {
+          hierarchical: false // Disable automatic layout
+        },
+        physics: {
+          enabled: false // Disable physics simulation
+        }
+
+      }
+      //adds to node buffer
+      tempNodes.push(tempN)
+    }
 
     //updates counters 
     node_tot++;

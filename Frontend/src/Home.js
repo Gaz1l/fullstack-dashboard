@@ -15,7 +15,7 @@ import TransponderData from './scenes/transponderData/index';
 import Settings from './scenes/settings';
 import Guide from './scenes/guide';
 import Access from './Access';
-
+import ErrorManager from './scenes/errorReporter';
 
 //Homepage routes - dashboard/filemanager/networkmap/transponderdata/settings/guide
 function Home() {
@@ -38,7 +38,7 @@ function Home() {
 
 
               {/*MAIN AREA BOX AND PATHS*/}
-              <Box style={{ paddingTop: "5vh", height: "100vh", overflow: "auto" }}>
+              <Box style={{ paddingTop: "5vh", height: "100vh",width: "100%", overflow: "auto" }}>
                 <Routes>
 
                   <Route element={<Access />}>
@@ -48,6 +48,7 @@ function Home() {
                     <Route path="/transponder" element={<TransponderData />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/guide" element={<Guide />} />
+                    <Route path="/error" element={<ErrorManager />} />
 
 
                   </Route>

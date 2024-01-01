@@ -120,6 +120,12 @@ const Transponder = () => {
   const chart = useRef(null);
   const chartOp = useRef(null);
 
+  function transponderChange(selected) {
+    setName(selected)
+    setTransponderDirection('')
+    setParameter('')
+  
+  }
 
 
   //get nws names when initilializing , deleting or uploading through get request (fetch)
@@ -245,7 +251,7 @@ const Transponder = () => {
 
           {/* FILE DROPDOWN - sets id of nw selected in name */}
           <DropdownNetworkComponent name="Filename" id="networkDropdown" value={name} label="FileName"
-            onChange={(e) => setName(e.target.value)} emptyArray={emptyArray} posts={networks} />
+            onChange={(e) => transponderChange(e.target.value)} emptyArray={emptyArray} posts={networks} />
 
           {/* DIRECTION DROPDOWN - sets direction selected in transponderDirection and gets parameter options from backend */}
           <DropdownEventComponent name="Direction" id="directionDropdown" value={transponderDirection} label="Direction"

@@ -1,3 +1,4 @@
+const { logEvents } = require('../middleware/logger');
 //model and imports to decrypt password and webtoken 
 const User = require('../models/User')
 const asyncHandler = require('express-async-handler')
@@ -14,11 +15,19 @@ const createNewUser = asyncHandler(async (req, res) => {
 
     // Confirm data
     if (!username || !password || !code) {
+        const error = new Error('All fields are required');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(400).json({ message: 'All fields are required' })
     }
 
     //Confirms validation code 
     if (code!==process.env.VALIDATION_CODE) {
+        const error = new Error('Invalid Validation Code');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(409).json({ message: 'Invalid Validation Code' })
     }
 
@@ -26,6 +35,10 @@ const createNewUser = asyncHandler(async (req, res) => {
     const duplicate = await User.findOne({ username }).lean().exec()
 
     if (duplicate) {
+        const error = new Error('Duplicate username');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         return res.status(409).json({ message: 'Duplicate username' })
     }
 
@@ -40,6 +53,10 @@ const createNewUser = asyncHandler(async (req, res) => {
     if (user) { //created 
         res.status(201).json({ message: `New user ${username} created` })
     } else {
+        const error = new Error('Invalid user data received');
+
+        logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+        console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
         res.status(400).json({ message: 'Invalid user data received' })
     }
 })

@@ -24,6 +24,7 @@ const Login = () => {
 
   const handleLogin = async () => {
 
+
     try {
       // Send a request to backend to authenticate 
       const response = await fetch(process.env.REACT_APP_BASE_URL + "/auth/", {

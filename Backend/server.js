@@ -33,8 +33,7 @@ const upload = multer({ dest: './files' });
 
 
 //console.log(process.env.NODE_ENV)
-
-app.set('trust proxy', true);
+app.set('trust proxy', false);
 
 //Server port - 3500 
 const PORT = process.env.PORT
@@ -52,10 +51,11 @@ app.use(express.urlencoded({ limit: '50mb' }));
 
 app.use(cookieParser())         //cookie parser middleware 
 
-
+app.use(errorHandler)  //error middleware 
 //routes/endpoints 
 app.use('/auth', require('./routes/authRoutes')) //authentication routes 
-app.use('/users', require('./routes/userRoutes')) //user routes 
+app.use('/users', require('./routes/userRoutes')) //user routes
+app.use('/report', require('./routes/reportRoutes')) //user routes 
 app.use('/files', upload.single('file'), require('./routes/fileRoutes'))  //files routes allows uploads 
 
 
@@ -71,7 +71,7 @@ app.all('*', (req, res) => {
     }
 })
 
-app.use(errorHandler)  //error middleware 
+
 
 //connection to mongo db - database
 //starts express application 

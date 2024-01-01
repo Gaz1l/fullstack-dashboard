@@ -17,6 +17,7 @@ import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import SettingsIcon from '@mui/icons-material/Settings';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import LogoutIcon from '@mui/icons-material/Logout';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 //Sidebar item 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -174,8 +175,17 @@ const Sidebar = () => {
                   setSelected={setSelected}
                 />
 
-                  {/*LOGOUT OPTION*/}
-                  <Item
+                {/*Report Error*/}
+                <Item
+                  title="Report Error"
+                  to="/homepage/error"
+                  icon={<FeedbackIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+
+                {/*LOGOUT OPTION*/}
+                <Item
                   title="Logout"
                   to="/logout"
                   icon={<LogoutIcon />}
