@@ -114,7 +114,7 @@ const ErrorManager = () => {
 
 
             {/* HEADER */}
-            <Header title="Report Error" subtitle="Give your feeback" />
+            <Header title="Report Error" subtitle="Give your feedback" />
 
             {/*ONE COLUMN GRID BOX - COINTAINING REPORT INPUT AND SUBMIT BUTTON*/}
 
