@@ -35,12 +35,12 @@ const upload = multer({ dest: './files' });
 const limiter = rateLimit({
 	validate: {
 		xForwardedForHeader: false,
-	},
+	}
 })
 
 app.use(limiter)
 //console.log(process.env.NODE_ENV)
-app.set('trust proxy', false);
+//app.set('trust proxy', false);
 
 //Server port - 3500 
 const PORT = process.env.PORT
