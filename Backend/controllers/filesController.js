@@ -79,7 +79,7 @@ const createNewFile = asyncHandler(async (req, res) => {
     const network = uploadedFile.originalname
 
     //Buffers 
-    let data = {}
+    let data
     let forward_path
     let backward_path
     let labelBuffer
@@ -595,13 +595,21 @@ const createNewFile = asyncHandler(async (req, res) => {
                 //Creates file model if new one 
 
                 //Missing data in json 
-                if (!network || network.trim() === "" || forward_path.length === 0 || backward_path.length === 0 || forward_label_plot.length === 0 || backward_label_plot.length === 0 || forward_node_type.length === 0 || backward_node_type.length === 0) {
-                    const error = new Error('Missing Data in JSON');
+                // if (!network || network.trim() === "" || forward_path.length === 0 || backward_path.length === 0 || forward_label_plot.length === 0 || backward_label_plot.length === 0 || forward_node_type.length === 0 || backward_node_type.length === 0) {
+                //     const error = new Error('Missing Data in JSON');
 
-                    logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
-                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
-                    return res.status(401).json({ message: 'Missing Data in JSON' })
-                }
+                //     logEvents(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log');
+                //     console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
+                //     return res.status(401).json({ message: 'Missing Data in JSON' })
+                // }
+                console.log(network)
+                console.log(data)
+                console.log(forward_path)
+                console.log(backward_path)
+                console.log(forward_label_plot)
+                console.log(backward_label_plot)
+                console.log(forward_node_type)
+                console.log(backwward_node_type)
                 const File = Log.create({ network, data: data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
 
                 console.log("Created!")
