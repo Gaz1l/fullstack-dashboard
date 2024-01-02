@@ -30,7 +30,7 @@ const getAllFiles = asyncHandler(async (req, res) => {
 
         return res.status(400).json({ message: 'No Files found' })
     }
-
+    console.log(Files)
     res.json(Files)
 })
 
@@ -626,6 +626,7 @@ const createNewFile = asyncHandler(async (req, res) => {
 // @route DELETE /files/data/delete/:filename
 const deleteFile = asyncHandler(async (req, res) => {
 
+    console.log(req.params.filename)
     // Confirm data
     if (!req.params.filename) {
         const error = new Error('File ID required');
@@ -648,7 +649,7 @@ const deleteFile = asyncHandler(async (req, res) => {
     }
 
     //Delete file 
-    const result = await Log.deleteOne()
+    const result = await Log.deleteOne({ _id: req.params.filename })
 
     const reply = `${req.params.filename} deleted`
 
