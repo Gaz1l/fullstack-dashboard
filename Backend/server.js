@@ -1,3 +1,4 @@
+import { rateLimit } from 'express-rate-limit'
 //Environment variables configuration 
 require('dotenv').config()
 
@@ -31,12 +32,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const multer = require('multer');
 const upload = multer({ dest: './files' });
 
+const limiter = rateLimit({
+	validate: {
+		xForwardedForHeader: false,
+	},
+})
 
+app.use(limiter)
 //console.log(process.env.NODE_ENV)
 app.set('trust proxy', false);
 
 //Server port - 3500 
 const PORT = process.env.PORT
+
+
 
 //Database connection 
 connectDB()
