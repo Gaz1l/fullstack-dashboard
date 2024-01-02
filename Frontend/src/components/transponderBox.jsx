@@ -595,7 +595,7 @@ const Transponder = () => {
 
 
           {/* GRAPH */}
-          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={200} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={150} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
         </Box>
       }
@@ -624,7 +624,7 @@ const Transponder = () => {
           }}>
 
             {/*GRAPH 1 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={150} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={120} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
           </Box>
 
           <Box sx={{
@@ -632,7 +632,7 @@ const Transponder = () => {
             width: "100vw",
           }}>
             {/*GRAPH 2 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={150} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={120} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
           </Box>
 
         </Box>

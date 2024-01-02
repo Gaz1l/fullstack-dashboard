@@ -434,7 +434,7 @@ export default function GraphView(mapPlot) {
 
 
                       {/*OPERATION GRAPH */}
-                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={500} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
+                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={450} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
 
 
 
@@ -513,7 +513,7 @@ export default function GraphView(mapPlot) {
 
 
                 {/* GRAPH */}
-                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={350} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={250} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
 
 
@@ -536,7 +536,7 @@ export default function GraphView(mapPlot) {
                   width: "100vw"
                 }}>
                   {/*GRAPH 1 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={150} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={120} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
                 </Box>
 
 
@@ -545,7 +545,7 @@ export default function GraphView(mapPlot) {
                   width: "100vw"
                 }}>
                   {/*GRAPH 2 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={150} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={120} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
                 </Box>
 
