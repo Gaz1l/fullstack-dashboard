@@ -32,13 +32,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const multer = require('multer');
 const upload = multer({ dest: './files' });
 
-const limiter = rateLimit({
-	validate: {
-		xForwardedForHeader: false,
-	}
-})
+// const limiter = rateLimit({
+// 	validate: {
+// 		xForwardedForHeader: false,
+// 	}
+// })
 
-app.use(limiter)
+// app.use(limiter)
 //console.log(process.env.NODE_ENV)
 //app.set('trust proxy', false);
 
