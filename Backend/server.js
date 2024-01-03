@@ -42,6 +42,10 @@ const upload = multer({ dest: './files' });
 //console.log(process.env.NODE_ENV)
 //app.set('trust proxy', false);
 
+app.set('trust proxy', 1)
+app.get('/ip', (request, response) => response.send(request.ip))
+app.get('/x-forwarded-for', (request, response) => response.send(request.headers['x-forwarded-for']))
+
 //Server port - 3500 
 const PORT = process.env.PORT
 
