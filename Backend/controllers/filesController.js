@@ -583,7 +583,7 @@ const createNewFile = asyncHandler(async (req, res) => {
 
 
     query
-        .then(result => {
+        .then(async result => {
             if (result) {
                 //Error if duplicate file
                 const error = new Error('Duplicate File title');
@@ -610,7 +610,7 @@ const createNewFile = asyncHandler(async (req, res) => {
                 console.log(backward_label_plot)
                 console.log(forward_node_type)
                 console.log(backward_node_type)
-                const File = Log.create({ network, data: data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
+                const File = await Log.create({ network, data: data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
 
                 console.log("Created!")
                 if (File) { // Created 
