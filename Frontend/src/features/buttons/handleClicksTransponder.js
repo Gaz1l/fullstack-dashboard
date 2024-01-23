@@ -9,9 +9,9 @@ import { convertData } from "../../data/dataConversor";
 const colorSelector = [tokens("dark").greenAccent[500], tokens("dark").redAccent[500], tokens("dark").blueAccent[500], tokens("dark").white[500], tokens("dark").orange[500], tokens("dark").pink[500], tokens("dark").yellow[500], tokens("dark").lavander[500], tokens("dark").indigo[500], tokens("dark").purple[500]]
 
 //when clicking add, adds selected option to databuffer and checks for duplicates 
-function handleAdd(setdataBuffer, dataBuffer, name, transponderDirection, parameter, duplicate) {
+function handleAdd(setdataBuffer, dataBuffer, name, transponderDirection, parameter) {
 
-  duplicate = false
+  let temp = "null"
 
   let i = 0;
 
@@ -27,19 +27,21 @@ function handleAdd(setdataBuffer, dataBuffer, name, transponderDirection, parame
 
 
   }
+  else if(dataBuffer.length >= 11)
+  temp="limit"
   else {
 
     for (i = 0; i < dataBuffer.length; i++) {
 
 
       if ((dataBuffer[i]["filename"] === name) && (dataBuffer[i]["direction"] === transponderDirection) && (dataBuffer[i]["parameter"] === parameter)) {
-        duplicate = true
+        temp = "duplicate"
 
       }
 
 
     }
-    if (!duplicate) {
+    if (temp==="null") {
 
       dataBuffer[i] = {
         filename: name,
@@ -53,7 +55,7 @@ function handleAdd(setdataBuffer, dataBuffer, name, transponderDirection, parame
 
 
   }
-  return duplicate
+  return temp
 
 
 

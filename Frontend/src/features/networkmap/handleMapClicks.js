@@ -51,7 +51,7 @@ async function handleSubmitMap(name, setIsLoadingMap, setMapToPlot, setLabelPlot
                 // Other error 
                 alert(responses.status)
                 throw new Error("Other error");
-                
+
               }
 
 
@@ -168,7 +168,7 @@ async function handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
 
                   return datas;
                 }
-            
+
                 else {
                   // Other error 
                   alert(responses.status)

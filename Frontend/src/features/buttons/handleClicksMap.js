@@ -9,10 +9,10 @@ import { convertData } from "../../data/dataConversor";
 const colorSelector = [tokens("dark").greenAccent[500], tokens("dark").redAccent[500], tokens("dark").blueAccent[500], tokens("dark").white[500], tokens("dark").orange[500], tokens("dark").pink[500], tokens("dark").yellow[500], tokens("dark").lavander[500], tokens("dark").indigo[500], tokens("dark").purple[500]]
 
 //when clicking add, adds selected option to databuffer and checks for duplicates
-function handleAdd(setdataBuffer, dataBuffer, mapPlot, nodeName, selectedNode, selectedVectorOption, selectedParameterOption, duplicate) {
+function handleAdd(setdataBuffer, dataBuffer, mapPlot, nodeName, selectedNode, selectedVectorOption, selectedParameterOption) {
 
 
-  duplicate = false
+  let temp = "null"
 
 
   let i = 0;
@@ -30,18 +30,20 @@ function handleAdd(setdataBuffer, dataBuffer, mapPlot, nodeName, selectedNode, s
     setdataBuffer([...dataBuffer]);
 
   }
+  else if (dataBuffer.length >= 11)
+    temp = "limit"
   else {
 
     for (i = 0; i < dataBuffer.length; i++) {
 
       if ((dataBuffer[i]["nodeName"] === nodeName) && (dataBuffer[i]["node"] === selectedNode) && (dataBuffer[i]["filename"] === mapPlot["filename"]) && (dataBuffer[i]["direction"] === mapPlot["direction"]) && (dataBuffer[i]["vector"] === selectedVectorOption) && (dataBuffer[i]["parameter"] === selectedParameterOption)) {
-        duplicate = true
+        temp = "duplicate"
 
       }
 
 
     }
-    if (!duplicate) {
+    if (temp === "null") {
 
       dataBuffer[i] = {
         filename: mapPlot["filename"],
@@ -59,7 +61,7 @@ function handleAdd(setdataBuffer, dataBuffer, mapPlot, nodeName, selectedNode, s
 
 
   }
-  return duplicate
+  return temp
 
 
 };
@@ -88,16 +90,16 @@ async function handleSubmit(dataBuffer, setPlot, setisLoadingSubmit) {
   for (let i = 0; i < dataBuffer.length; i++) {
 
 
-    url[i]= process.env.REACT_APP_BASE_URL + "/files/data/network/" + dataBuffer[i]["filename"] + "/"+ dataBuffer[i]["direction"] + "/" +dataBuffer[i]["node"] + "/" + dataBuffer[i]["vector"]  + "/" +dataBuffer[i]["parameter"] + "/" 
+    url[i] = process.env.REACT_APP_BASE_URL + "/files/data/network/" + dataBuffer[i]["filename"] + "/" + dataBuffer[i]["direction"] + "/" + dataBuffer[i]["node"] + "/" + dataBuffer[i]["vector"] + "/" + dataBuffer[i]["parameter"] + "/"
 
-   // url[i] = `http://localhost:3500/files/data/network/${dataBuffer[i]["filename"]}/${dataBuffer[i]["direction"]}/${dataBuffer[i]["node"]}/${dataBuffer[i]["vector"]}/${dataBuffer[i]["parameter"]}/`;
+    // url[i] = `http://localhost:3500/files/data/network/${dataBuffer[i]["filename"]}/${dataBuffer[i]["direction"]}/${dataBuffer[i]["node"]}/${dataBuffer[i]["vector"]}/${dataBuffer[i]["parameter"]}/`;
 
 
 
   }
 
 
-  
+
 
 
   processURLs(url) //send multiple get messages to backend 

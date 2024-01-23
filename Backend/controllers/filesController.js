@@ -102,7 +102,7 @@ const createNewFile = asyncHandler(async (req, res) => {
         } else {
             //data in the json file
             data = JSON.parse(rcv);
-            console.log(data)
+            //console.log(data)
             //No data or file name 
             if (!network || !data) {
                 const error = new Error('All fields are required');
@@ -135,6 +135,7 @@ const createNewFile = asyncHandler(async (req, res) => {
             x = x["Signal_Propagation"]
             x = Object.entries(x)            //convert to array format 
 
+            console.log(x)
             // Check if the array has enough elements
             if (x.length < 2) {
                 const error = new Error('Missing Data in JSON');
@@ -602,17 +603,17 @@ const createNewFile = asyncHandler(async (req, res) => {
                    console.error(`${error.name}: ${error.message}\t${req.method}\t${req.url}\t${req.headers.origin}`);
                    return res.status(401).json({ message: 'Missing Data in JSON' })
                 }
-                console.log(network)
-                console.log(data)
-                console.log(forward_path)
-                console.log(backward_path)
-                console.log(forward_label_plot)
-                console.log(backward_label_plot)
-                console.log(forward_node_type)
-                console.log(backward_node_type)
+                //console.log(network)
+                //console.log(data)
+                //console.log(forward_path)
+                //console.log(backward_path)
+                //console.log(forward_label_plot)
+                //console.log(backward_label_plot)
+                //console.log(forward_node_type)
+                //console.log(backward_node_type)
                 const File = await Log.create({ network, data: data, forward_path, backward_path, forward_label_plot, backward_label_plot, forward_node_type, backward_node_type })
 
-                console.log("Created!")
+                //console.log("Created!")
                 if (File) { // Created 
                     return res.status(201).json({ message: 'New File created' })
                 } else {    //Invalid 
@@ -1368,6 +1369,7 @@ const getTransponderParams = asyncHandler(async (req, res) => {
 
 
 module.exports = {
+    
     getAllFiles,
     createNewFile,
     deleteFile,
@@ -1378,3 +1380,8 @@ module.exports = {
     getParams,
     getTransponderParams
 }
+
+
+
+
+

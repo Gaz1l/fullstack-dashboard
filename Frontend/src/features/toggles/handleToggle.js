@@ -26,4 +26,15 @@ function handleRemoveElement(indexToRemove, setdataBuffer) {
   setdataBuffer((prevData) => prevData.filter((_, index) => index !== indexToRemove));
 };
 
-export { toggleText, toggleSplit, toggleGrid, handleRemoveElement }
+//subtract number 
+function toggleUp(setValue,value) {
+  setValue(value-10);
+};
+
+//add number 
+function toggleDown(setValue,value) {
+  setValue(value+10);
+};
+
+
+export { toggleText, toggleSplit, toggleGrid, handleRemoveElement,toggleUp,toggleDown }

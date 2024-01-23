@@ -9,6 +9,8 @@ import "vis-network/styles/vis-network.css";
 //Icons
 import ClearIcon from '@mui/icons-material/Clear';
 import DownloadIcon from '@mui/icons-material/Download';
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
 //MUI Components 
 import Typography from '@mui/material/Typography';
@@ -38,7 +40,7 @@ import { handleAdd, handleReset, handleSubmit } from "../features/buttons/handle
 import { handleTransponderInputChange } from "../features/dropdown/handleTransponderInput";
 import { handlePopOverTrans, handlePopOverOperation, handleClosePopNetOperation } from '../features/popover/handlePopover';
 import { submitOperation } from '../features/buttons/handleOperation';
-import { toggleText, toggleSplit, toggleGrid, handleRemoveElement } from '../features/toggles/handleToggle';
+import { toggleText, toggleSplit, toggleGrid, handleRemoveElement, toggleDown, toggleUp } from '../features/toggles/handleToggle';
 import { handlePopUpTransponderBox, handlePopUpOperation } from '../features/popup/handlePopUp';
 
 //Download graph
@@ -80,6 +82,9 @@ const Transponder = () => {
   const [rlTransponder, setrlTransponder] = useState("");
   const [minTransponder, setminTransponder] = useState("");
   const [maxTransponder, setmaxTransponder] = useState("");
+
+  //label position value and state 
+  const [labelPos, setLabelPos] = useState(150);
 
   //limit in graph value and state 
   const [limitGraph, setLimitGraph] = useState("");
@@ -124,7 +129,7 @@ const Transponder = () => {
     setName(selected)
     setTransponderDirection('')
     setParameter('')
-  
+
   }
 
 
@@ -136,68 +141,69 @@ const Transponder = () => {
         'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,
       },
     })
-    .then(async (res) => {
-      if (res.ok) {
-        // If the response status is OK, proceed with parsing the JSON
-        return res.json();
-      } else if (res.status === 403) {
-        // Unauthorized: Access token is likely expired
-        // refresh token
-        console.log("Token expired, initiate token refresh");
-        try {
-          const response = await fetch(process.env.REACT_APP_BASE_URL+ "/auth/refresh", {
-            method: 'GET',
-            credentials: 'include', // Include credentials to send cookies
-          });
-          if (response.ok) {
-            // If the refresh is successful, extract the new access token from the response
-            const data = await response.json();
-            sessionStorage.setItem('accessToken', data.accessToken);
-            console.log('Access token refreshed successfully',data);
-           
-           
-            try {
-              const responses = await fetch(process.env.REACT_APP_BASE_URL + "/files/", {
-                method: 'GET',
-                headers: {
-                  'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,
-                },
-              });
-              if (responses.ok) {
-                // If the refresh is successful, extract the new access token from the response
-                const datas = await responses.json();
-  
-                return datas;
-               
-               
-  
-               
-              }} catch (error) {
+      .then(async (res) => {
+        if (res.ok) {
+          // If the response status is OK, proceed with parsing the JSON
+          return res.json();
+        } else if (res.status === 403) {
+          // Unauthorized: Access token is likely expired
+          // refresh token
+          console.log("Token expired, initiate token refresh");
+          try {
+            const response = await fetch(process.env.REACT_APP_BASE_URL + "/auth/refresh", {
+              method: 'GET',
+              credentials: 'include', // Include credentials to send cookies
+            });
+            if (response.ok) {
+              // If the refresh is successful, extract the new access token from the response
+              const data = await response.json();
+              sessionStorage.setItem('accessToken', data.accessToken);
+              console.log('Access token refreshed successfully', data);
+
+
+              try {
+                const responses = await fetch(process.env.REACT_APP_BASE_URL + "/files/", {
+                  method: 'GET',
+                  headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,
+                  },
+                });
+                if (responses.ok) {
+                  // If the refresh is successful, extract the new access token from the response
+                  const datas = await responses.json();
+
+                  return datas;
+
+
+
+
+                }
+              } catch (error) {
                 // Handle unexpected errors during token refresh
                 console.error('Unexpected error during token refresh', error);
                 // Handle logout or redirect to login page
               }
-              }
-            }catch (error) {
-              // Handle unexpected errors during token refresh
-              console.error('Unexpected error during token refresh', error);
-              // Handle logout or redirect to login page
-            } 
-
+            }
+          } catch (error) {
+            // Handle unexpected errors during token refresh
+            console.error('Unexpected error during token refresh', error);
+            // Handle logout or redirect to login page
           }
-          
 
-      
-     
-       
-       else {
-        // Handle other HTTP status codes as needed
-        console.log("Other error:", res.status);
-        throw new Error("Other error");
-      }
-    })
+        }
+
+
+
+
+
+        else {
+          // Handle other HTTP status codes as needed
+          console.log("Other error:", res.status);
+          throw new Error("Other error");
+        }
+      })
       .then((data) => {
-        
+
         //sets ids and names of nws in db received from backend
         setNetworks(data);
 
@@ -289,21 +295,21 @@ const Transponder = () => {
 
           {/* LIST OF ADDED ELEMENTS - located in databuffer and allows to remove them */}
           <Typography>
-          Added Elements:
+            Added Elements:
 
           </Typography>
-            {dataBuffer.map((element, index) => (
-              <Box  key={index}>
+          {dataBuffer.map((element, index) => (
+            <Box key={index}>
 
-<Typography>
+              <Typography>
                 {element["direction"]} {element["parameter"]}
                 <IconButton onClick={() => handleRemoveElement(index, setdataBuffer)}>
                   <ClearIcon />
                 </IconButton>
-                </Typography>
-              </Box>
-            ))}
-          
+              </Typography>
+            </Box>
+          ))}
+
         </Box>
       </Box>
 
@@ -339,6 +345,9 @@ const Transponder = () => {
               justifyContent: 'space-between'
             }}
           >
+
+
+
 
             {/* LINEAR/LOG BUTTON */}
             <Box>
@@ -380,6 +389,8 @@ const Transponder = () => {
             >
               Download Graph
             </Button>
+
+
 
 
           </Box>
@@ -567,7 +578,44 @@ const Transponder = () => {
 
 
 
+          <Box
+            sx={{
+              p: "1vh 0vw 0vh 2.5vw",
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-start'
+            }}
 
+
+          >
+
+            <Box
+              sx={{
+                display: 'grid',
+              }}
+            >
+              {/* DOWNLOAD BUTTON  */}
+              <Button
+
+                startIcon={<ArrowCircleUpIcon />}
+                variant="small"
+                onClick={() => toggleUp(setLabelPos, labelPos)}
+              >
+
+              </Button>
+              <Button
+
+                startIcon={<ArrowCircleDownIcon />}
+                variant="small"
+                onClick={() => toggleDown(setLabelPos, labelPos)}
+              >
+
+              </Button>
+
+
+
+            </Box>
+          </Box>
 
 
         </Box>
@@ -575,6 +623,7 @@ const Transponder = () => {
 
 
       }
+
 
 
 
@@ -595,7 +644,7 @@ const Transponder = () => {
 
 
           {/* GRAPH */}
-          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={150} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
         </Box>
       }
@@ -624,7 +673,7 @@ const Transponder = () => {
           }}>
 
             {/*GRAPH 1 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={120} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
           </Box>
 
           <Box sx={{
@@ -632,7 +681,7 @@ const Transponder = () => {
             width: "100vw",
           }}>
             {/*GRAPH 2 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={120} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
           </Box>
 
         </Box>

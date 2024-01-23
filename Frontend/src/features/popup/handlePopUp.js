@@ -48,7 +48,7 @@ const handlePopUpNetworkBox = (event, name, selectedDirectionOption, nodesPerRow
 const handlePopUpNetworkMap = (event, selectedNode, selectedVectorOption, selectedParameterOption, setTextPop, setAnchor, handleAdd, setdataBuffer, dataBuffer, mapPlot, nodeName) => {
   //when adding checks for errors (popups) before adding options selected to databuffer
   //when submiting checks for errors (popups) before asking backend for map 
-  let duplicate
+  let temp
   if (selectedNode === "") {
 
     if (selectedVectorOption === "") {
@@ -83,9 +83,13 @@ const handlePopUpNetworkMap = (event, selectedNode, selectedVectorOption, select
   }
   else {
 
-    duplicate = handleAdd(setdataBuffer, dataBuffer, mapPlot, nodeName, selectedNode, selectedVectorOption, selectedParameterOption, duplicate)
-    if (duplicate) {
+    temp = handleAdd(setdataBuffer, dataBuffer, mapPlot, nodeName, selectedNode, selectedVectorOption, selectedParameterOption)
+    if (temp === "duplicate") {
       setTextPop("Duplicate")
+      setAnchor(event.currentTarget);
+    }
+    else if (temp === "limit") {
+      setTextPop("Maximum graphs selected")
       setAnchor(event.currentTarget);
     }
     else {
@@ -102,7 +106,7 @@ const handlePopUpTransponderBox = (event, name, transponderDirection, parameter,
   //when adding checks for errors (popups) before adding options selected to databuffer
   //DataBuffer - Array with data selected to send to server when clicking add - contains id (name), direction (transponderdirection) and parameter
 
-  let duplicate
+  let temp
   if (name === "") {
 
     if (transponderDirection === "") {
@@ -138,9 +142,13 @@ const handlePopUpTransponderBox = (event, name, transponderDirection, parameter,
   else {
 
     //add and checks for duplicate 
-    duplicate = handleAdd(setdataBuffer, dataBuffer, name, transponderDirection, parameter, duplicate)
-    if (duplicate) {
+    temp = handleAdd(setdataBuffer, dataBuffer, name, transponderDirection, parameter)
+    if (temp === "duplicate") {
       setTextPop("Duplicate")
+      setAnchor(event.currentTarget);
+    }
+    else if (temp === "limit") {
+      setTextPop("Maximum graphs selected")
       setAnchor(event.currentTarget);
     }
     else {

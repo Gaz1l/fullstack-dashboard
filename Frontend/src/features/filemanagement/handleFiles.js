@@ -91,7 +91,7 @@ async function handleFileUpload(selectedFile, setUpdateFlag) {
                     alert("File Already Exists")
                     throw new Error('File Already Exists');
                   }
-                  else if(res.status ===401){
+                  else if (res.status === 401) {
                     alert("Missing Data")
                     throw new Error("Missing Data");
                   }
@@ -118,7 +118,7 @@ async function handleFileUpload(selectedFile, setUpdateFlag) {
             }
 
           }
-          else if(res.status ===401){
+          else if (res.status === 401) {
             alert("Missing Data")
             throw new Error("Missing Data");
           }
@@ -129,8 +129,8 @@ async function handleFileUpload(selectedFile, setUpdateFlag) {
           }
 
         }
-        else 
-        alert("File Uploaded Successfully!")
+        else
+          alert("File Uploaded Successfully!")
       })
       .catch(error => {
         //Error alert 
@@ -169,8 +169,8 @@ async function handleDelete(name, setName, setUpdateFlag) {
         if (res.ok) {
           // If the response status is OK, proceed with parsing the JSON
           return res.json();
-        }       
-          //Access token invalid - Forbidden
+        }
+        //Access token invalid - Forbidden
         else if (res.status === 403) {
 
           //sends refresh token through cookies to try get new access token 
@@ -189,7 +189,7 @@ async function handleDelete(name, setName, setUpdateFlag) {
 
               // Tries to get data again with new access token 
               try {
-                const responses = await     fetch(url, {
+                const responses = await fetch(url, {
                   method: 'DELETE',
                   headers: {
                     'Authorization': `Bearer ${sessionStorage.getItem('accessToken')}`,

@@ -11,6 +11,8 @@ import { tokens, NavComContext } from "../theme";
 //Icons
 import ClearIcon from '@mui/icons-material/Clear';
 import DownloadIcon from '@mui/icons-material/Download';
+import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
 //MUI Components 
 import Box from '@mui/material/Box';
@@ -32,7 +34,7 @@ import TripleButton from './button/tripleButton';
 
 //Handlers
 import { handlePopUpNetworkMap, handlePopUpOperation } from '../features/popup/handlePopUp';
-import { toggleText, toggleSplit, toggleGrid, handleRemoveElement } from '../features/toggles/handleToggle';
+import { toggleText, toggleSplit, toggleGrid, handleRemoveElement, toggleDown, toggleUp } from '../features/toggles/handleToggle';
 import { handleAdd, handleReset, handleSubmit } from '../features/buttons/handleClicksMap';
 import { handleFirstInputChange } from '../features/dropdown/handleMapInput';
 import { handleNodeClick } from '../features/networkmap/handleMapClicks';
@@ -78,6 +80,9 @@ export default function GraphView(mapPlot) {
   const [selectedGraph1, setSelectedGraph1] = useState("");
   const [selectedGraph2, setSelectedGraph2] = useState("");
   const [operationGraph, setOperationGraph] = useState("");
+
+  //label position value and state 
+  const [labelPos, setLabelPos] = useState(250);
 
   //limit in graph value and state 
   const [limitGraph, setLimitGraph] = useState("");
@@ -133,7 +138,7 @@ export default function GraphView(mapPlot) {
     }
 
     //get element by id where the map will be ploted 
-    const networkContainer = document.getElementById('your-network-container-id');
+    const networkContainer = document.getElementById('network-container');
 
     let flag
 
@@ -259,24 +264,24 @@ export default function GraphView(mapPlot) {
         <Typography>
           Added Elements:
 
-          </Typography>
+        </Typography>
 
-          {dataBuffer.map((element, index) => (
-            <Box key={index} >
-          <Typography>
-                {element["nodeName"]} {element["vector"]} {element["parameter"]}
-            
+        {dataBuffer.map((element, index) => (
+          <Box key={index} >
+            <Typography>
+              {element["nodeName"]} {element["vector"]} {element["parameter"]}
+
               <IconButton onClick={() => handleRemoveElement(index, setdataBuffer)}>
                 <ClearIcon />
               </IconButton>
-              </Typography>
-            </Box>
-          ))}
-        
+            </Typography>
+          </Box>
+        ))}
+
       </Box>
 
       {/* THIRD ROW - GREY BOX -  CONTAINING NETWORK MAP - position with data to be created  */}
-      <Box id="your-network-container-id"
+      <Box id="network-container"
         sx={{
           m: "3vh 5vw 0 5vw",
           backgroundColor: colors.primary[400],
@@ -495,17 +500,58 @@ export default function GraphView(mapPlot) {
             >
               Download Chart
             </Button>
-
             {/* SPLIT GRAPHS BUTTON - WHEN 2 GRAPHS EXIST*/}
             {plot.length === 2 &&
-              <Button sx={{ marginLeft: '1vw', marginRight: '0.25vw' }} onClick={() => toggleSplit(setSplitGraphs)} variant="contained" size="medium">{splitgraphs} Graphs</Button>
+              <Button sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }} onClick={() => toggleSplit(setSplitGraphs)} variant="contained" size="medium">{splitgraphs} Graphs</Button>
             }
+
+
+            <Box
+              sx={{
+                pl: "1.5vw",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'flex-start'
+              }}
+
+
+            >
+
+              <Box
+                sx={{
+                  display: 'grid',
+                }}
+              >
+                {/* DOWNLOAD BUTTON  */}
+                <Button
+
+                  startIcon={<ArrowCircleUpIcon />}
+                  variant="small"
+                  onClick={() => toggleUp(setLabelPos, labelPos)}
+                >
+
+                </Button>
+                <Button
+
+                  startIcon={<ArrowCircleDownIcon />}
+                  variant="small"
+                  onClick={() => toggleDown(setLabelPos, labelPos)}
+                >
+
+                </Button>
+
+
+
+              </Box>
+            </Box>
+
+
 
 
             {/*UNSPLITTED GRAPH */}
             {splitgraphs === "split" &&
               <Box sx={{
-                height: "90vh",
+                height: "70vh",
                 width: "100vw",
                 backgroundColor: colors.primary[400],
               }}
@@ -513,7 +559,7 @@ export default function GraphView(mapPlot) {
 
 
                 {/* GRAPH */}
-                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={250} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
 
 
@@ -525,27 +571,27 @@ export default function GraphView(mapPlot) {
             {/*SPLITTED GRAPHS */}
             {splitgraphs === "unsplit" &&
               <Box sx={{
-                height: "90vh",
+                height: "100vh",
                 width: "100vw",
                 backgroundColor: colors.primary[400],
               }}
                 ref={chart}>
 
                 <Box sx={{
-                  height: "45vh",
+                  height: "50vh",
                   width: "100vw"
                 }}>
                   {/*GRAPH 1 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={120} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
                 </Box>
 
 
                 <Box sx={{
-                  height: "45vh",
+                  height: "50vh",
                   width: "100vw"
                 }}>
                   {/*GRAPH 2 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={120} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
                 </Box>
 

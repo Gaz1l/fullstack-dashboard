@@ -43,6 +43,7 @@ export const convertData = (dataToConvert, filename, colorselected) => {
 export const convertMapData = (path_data, label_data, node_type, nodesPerRow) => {
 
 
+  
 
   let tempNodes = []
   let tempEdges = []

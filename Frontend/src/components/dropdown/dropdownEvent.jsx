@@ -1,4 +1,4 @@
-//Dropdown of nws names received from db and takes option selected as value 
+//Dropdown of options received from db and takes option selected as value 
 
 //React and MUI component 
 import React from 'react';
@@ -15,7 +15,7 @@ const DropdownEventComponent = ({ name, id, value, label, onChange, posts }) => 
         label={label}
         onChange={onChange}
       >
-        {        //plot nw names received and takes option selected as value 
+        {        //plot options received and takes option selected as value 
           posts.map((option, index) => (
             <MenuItem key={index} value={option}>
               {option}
