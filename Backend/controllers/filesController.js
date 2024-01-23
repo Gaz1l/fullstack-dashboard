@@ -30,7 +30,7 @@ const getAllFiles = asyncHandler(async (req, res) => {
 
         return res.status(400).json({ message: 'No Files found' })
     }
-    console.log(Files)
+    //console.log(Files)
     res.json(Files)
 })
 
@@ -135,7 +135,7 @@ const createNewFile = asyncHandler(async (req, res) => {
             x = x["Signal_Propagation"]
             x = Object.entries(x)            //convert to array format 
 
-            console.log(x)
+            //console.log(x)
             // Check if the array has enough elements
             if (x.length < 2) {
                 const error = new Error('Missing Data in JSON');
@@ -635,7 +635,7 @@ const createNewFile = asyncHandler(async (req, res) => {
 // @route DELETE /files/data/delete/:filename
 const deleteFile = asyncHandler(async (req, res) => {
 
-    console.log(req.params.filename)
+    //console.log(req.params.filename)
     // Confirm data
     if (!req.params.filename) {
         const error = new Error('File ID required');
