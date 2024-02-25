@@ -1,11 +1,12 @@
 //handlers for toggling betweens button status when plotting the graphs 
 
-//linear or logaritmic scale 
+//linear or logaritmic scale - grid and values
 function toggleText(setDisplayText) {
   setDisplayText((prevDisplayText) =>
     prevDisplayText === "linear" ? "log" : "linear"
   );
 };
+
 
 //split or not two graphs
 function toggleSplit(setSplitGraphs) {

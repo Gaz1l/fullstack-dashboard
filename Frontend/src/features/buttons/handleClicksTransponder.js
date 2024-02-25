@@ -74,6 +74,7 @@ async function handleSubmit(dataBuffer, setPlot, setisLoadingSubmit, setrlTransp
   const plots = [];
   let url = []
   let label_node = ""
+  let node_unit = ""
 
   //creating each url to communicate 
   for (let i = 0; i < dataBuffer.length; i++) {
@@ -102,16 +103,17 @@ async function handleSubmit(dataBuffer, setPlot, setisLoadingSubmit, setrlTransp
 
           let substring = dataBuffer[i]["parameter"].split("_");
 
-          label_node = dataBuffer[i]["direction"][0].concat("-", substring[0], " (", substring[1], ")")
-
+          label_node = dataBuffer[i]["direction"][0].concat("-", substring[0], "(", substring[1], ")")
+          node_unit = "(".concat(substring[1], ")")
         }
         else {
 
           label_node = dataBuffer[i]["direction"][0].concat("-", dataBuffer[i]["parameter"], " (dB)")
+          node_unit = "(dB)"
         }
 
         //convert each graph to a required format - plot to use in Linechart - contains label , colour and data(x, y_linear, y_log) for each graph  
-        plots.push(convertData(responseData[i], label_node, colorSelector[i])[0])
+        plots.push(convertData(responseData[i], label_node, colorSelector[i],node_unit)[0])
 
         //sets static transponder values received
         setrlTransponder(responseData[i]["RL_McTemplate"])

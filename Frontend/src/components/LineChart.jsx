@@ -25,7 +25,7 @@ const formatEngineeringNotation = (value) => {
 };
 
 
-const LineChart = ({ isDashboard = false, dataToPlot, log_linear, gridValue, mRight, mLeft, itemW, xLegends, yLegends, limitFlag, limitValue, titleGraph }) => {
+const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_values, gridValue, mRight, mLeft, itemW, xLegends, yLegends, limitFlag, limitValue, titleGraph }) => {
 
   //Use theme and colors 
   const theme = useTheme();
@@ -45,6 +45,8 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, gridValue, mRi
     gridflag = true
 
 
+  console.log(log_linear)
+  console.log(log_linear_values)
   //Define legend if not operation graph 
   if (titleGraph === "Parameter Values") {
 
@@ -94,82 +96,117 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, gridValue, mRi
     ]
 
   }
-
+console.log(dataToPlot)
   //Checks if linear or logaritmic scale and if data is valid to be plotted 
   for (let j = 0; j < dataToPlot.length; j++) {
+
+    let bufferLin = []
+    let bufferLog = [] 
+    let tempLin = [] 
+    let tempLog = [] 
+
+    //Buffer in required format without NaN and Infinity  
+    for (let a = 0; a < dataToPlot[j]["data"].length; a++) {
+
+      tempLin = {
+        x: '',
+        y: '',
+      }
+      
+      tempLog = {
+        x: '',
+        y: '',
+      }
+
+      if (dataToPlot[j]["data"][a]["y_linear"] !== "NaN" && dataToPlot[j]["data"][a]["y_linear"] !== "Infinity" &&dataToPlot[j]["data"][a]["y_linear"] !== "-Infinity" && isFinite(dataToPlot[j]["data"][a]["y_linear"])){
+        tempLin['y'] = dataToPlot[j]["data"][a]["y_linear"]
+        tempLin['x'] = dataToPlot[j]["data"][a]["x"]
+        bufferLin.push(tempLin)
+      }
+      if (dataToPlot[j]["data"][a]["y_log"] !== "NaN" && dataToPlot[j]["data"][a]["y_log"] !== "Infinity" &&dataToPlot[j]["data"][a]["y_log"] !== "-Infinity" && isFinite(dataToPlot[j]["data"][a]["y_log"])){
+        tempLog['y'] = dataToPlot[j]["data"][a]["y_log"] 
+        tempLog['x'] = dataToPlot[j]["data"][a]["x"]
+        bufferLog.push(tempLog)
+      }
+
+
+
+
+
+      
+    }
+
+    console.log(bufferLin)
+    //console.log(buffer)
     invalid = false
     let plot = []
     //LINEAR
-    if (log_linear === "linear") {
+    if (log_linear_values === "linear") {
 
 
-      for (let i = 0; i < dataToPlot[j]["data"].length; i++) {
+      for (let i = 0; i < bufferLin.length; i++) {
 
         plot[i] = {
           x: '',
           y: '',
         }
 
-        plot[i]['x'] = dataToPlot[j]["data"][i]["x"]
-        plot[i]['y'] = dataToPlot[j]["data"][i]["y_linear"]
+        plot[i]['x'] = bufferLin[i]["x"]
+        plot[i]['y'] = bufferLin[i]["y"]
 
 
       }
     }
     //LOGARITMIC 
-    else if (log_linear === "log") {
+    else if (log_linear_values === "log") {
 
 
-      for (let i = 0; i < dataToPlot[j]["data"].length; i++) {
+      for (let i = 0; i < bufferLog.length; i++) {
 
         plot[i] = {
           x: '',
           y: '',
         }
 
-        plot[i]['x'] = dataToPlot[j]["data"][i]["x"]
-        plot[i]['y'] = dataToPlot[j]["data"][i]["y_log"]
+        plot[i]['x'] = bufferLog[i]["x"]
+        plot[i]['y'] = bufferLog[i]["y"]
+      }
+    }
 
+    if (log_linear === "log") {
+      for (let i = 0; i < plot.length; i++) {
         //Checks if data is valid to logaritmic scale 
-        if (dataToPlot[j]["data"][i]["y_linear"] <= 0 || dataToPlot[j]["data"][i]["y_log"] === 0)
+        if (plot[i]["y"] === 0)
           invalid = true
         else {
-          if (signalLog === "none" && dataToPlot[j]["data"][i]["y_log"] >= 0) {
+          if (signalLog === "none" && plot[i]["y"] >= 0) {
             signalLog = "pos"
           }
-          else if (signalLog === "none" && dataToPlot[j]["data"][i]["y_log"] <= 0) {
+          else if (signalLog === "none" && plot[i]["y"] <= 0) {
             signalLog = "neg"
           }
-          else if (signalLog === "pos" && dataToPlot[j]["data"][i]["y_log"] < 0) {
+          else if (signalLog === "pos" && plot[i]["y"] <= 0) {
             invalid = true
           }
-          else if (signalLog === "neg" && dataToPlot[j]["data"][i]["y_log"] > 0) {
+          else if (signalLog === "neg" && plot[i]["y"] >= 0) {
             invalid = true
           }
 
         }
       }
-
     }
+
+
 
     //Invalid logaritmic data 
     if (invalid && log_linear === "log")
       continue
 
 
-    //Checks for not numbers in valid data to convert to null 
-    for (let i = 0; i < plot.length; i++) {
-
-      if (plot[i]['x'] === "NaN" || plot[i]['x'] === "Infinity")
-        plot[i]['x'] = null
-
-      if (plot[i]['y'] === "NaN" || plot[i]['y'] === "Infinity")
-        plot[i]['y'] = null
 
 
-
-    }
-
+    //console.log(buffer)
+    console.log(plot)
     //Valid data added 
     let plotBuffer = [{
       id: dataToPlot[j]["id"],
@@ -245,7 +282,7 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, gridValue, mRi
 
       //axis
       markers={markers}
-      curve="catmullRom"
+      curve="monotoneX"
       axisTop={null}
       axisRight={null}
       axisBottom={{

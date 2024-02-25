@@ -91,6 +91,7 @@ export default function GraphView(mapPlot) {
   //text displayed and state of linear/log, split and grid buttons 
   const [splitgraphs, setSplitGraphs] = useState("split");
   const [displayText, setDisplayText] = useState("linear");
+  const [displayValuesText, setDisplayValuesText] = useState("linear");
   const [gridText, setGridText] = useState("grid");
 
 
@@ -323,9 +324,11 @@ export default function GraphView(mapPlot) {
 
             {/* LINEAR/LOG BUTTON */}
             <Button variant="contained" onClick={() => toggleText(setDisplayText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
-              {displayText}
+              Grid: {displayText}
             </Button>
-
+            <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayValuesText)}>
+                Values: {displayValuesText}
+              </Button>
             {/* GRID BUTTON */}
             <Button sx={{ marginLeft: '0.5vw', marginRight: '3vw' }} variant="contained" onClick={() => toggleGrid(setGridText)}>
               {gridText}
@@ -379,11 +382,13 @@ export default function GraphView(mapPlot) {
                     {/* POPOVER CLOSE BUTTON - resets flags  */}
                     <Button onClick={() => handleClosePopNetOperation(setIsLoadingOperation, setAnchorOp, setSelectedGraph1, setSelectedGraph2, setOperationGraph)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }} variant="contained" size="medium">Close</Button>
 
-                    {/* LINEAR/LOG BUTTON */}
-
-                    <Button variant="contained" onClick={() => toggleText(setDisplayText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
-                      {displayText}
-                    </Button>
+            {/* LINEAR/LOG BUTTON */}
+            <Button variant="contained" onClick={() => toggleText(setDisplayText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
+              Grid: {displayText}
+            </Button>
+            <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayValuesText)}>
+                Values: {displayValuesText}
+              </Button>
 
 
                     {/* GRID BUTTON */}
@@ -439,7 +444,7 @@ export default function GraphView(mapPlot) {
 
 
                       {/*OPERATION GRAPH */}
-                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={450} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
+                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={450} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
 
 
 
@@ -551,7 +556,7 @@ export default function GraphView(mapPlot) {
             {/*UNSPLITTED GRAPH */}
             {splitgraphs === "split" &&
               <Box sx={{
-                height: "70vh",
+                height: "90vh",
                 width: "100vw",
                 backgroundColor: colors.primary[400],
               }}
@@ -559,7 +564,7 @@ export default function GraphView(mapPlot) {
 
 
                 {/* GRAPH */}
-                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
 
 
@@ -582,7 +587,7 @@ export default function GraphView(mapPlot) {
                   width: "100vw"
                 }}>
                   {/*GRAPH 1 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
                 </Box>
 
 
@@ -591,7 +596,7 @@ export default function GraphView(mapPlot) {
                   width: "100vw"
                 }}>
                   {/*GRAPH 2 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
                 </Box>
 

@@ -1,30 +1,46 @@
 //Function to convert received data into a required format in order to plot the graphs with linechart
-export const convertData = (dataToConvert, filename, colorselected) => {
+export const convertData = (dataToConvert, filename, colorselected,label_unit) => {
 
   let frequencyToConvert = dataToConvert["frequency"]
   let valuesToConvert = dataToConvert["data"]
   let buffer = []
   let i
+  let logarithmicData = []
+  let linearData = []
 
   //logaritmic conversion 
-  let logarithmicData = valuesToConvert.map(value => Math.log10(value));
-
-
-  for (i = 0; i < frequencyToConvert.length; i++) {
-    //required format
-    buffer[i] = {
-      x: '',
-      y_linear: '',
-      y_log: '',
-    }
-
-    buffer[i]['x'] = frequencyToConvert[i]
-    buffer[i]['y_linear'] = valuesToConvert[i]
-    buffer[i]['y_log'] = logarithmicData[i]
-
-
+  console.log(label_unit)
+  if(label_unit==="(dBm)"){
+    logarithmicData = valuesToConvert;
+    linearData = valuesToConvert.map(value => Math.pow(10,value/10));
+  }
+  else if(label_unit==="(dB)"){
+    console.log("boas")
+    logarithmicData = valuesToConvert;
+    linearData = valuesToConvert;
+  }
+  else {
+    linearData = valuesToConvert;
+    logarithmicData = valuesToConvert.map(value => Math.log10(value));
   }
 
+  //adds 3 types of data into the correct format 
+  // freq, linear and log values 
+  for (i = 0; i < frequencyToConvert.length; i++) {    
+      let temp = {
+        x: '',
+        y_linear: '',
+        y_log: '',
+      }
+
+    temp['x'] = frequencyToConvert[i]
+    temp['y_linear'] = linearData[i]
+    temp['y_log'] = logarithmicData[i]
+
+    buffer.push(temp)
+  }
+
+  console.log(buffer)
   //data into required format to plot 
   let dataConverted = [{
     id: filename,

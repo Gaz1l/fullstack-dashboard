@@ -100,6 +100,7 @@ const Transponder = () => {
 
   //text displayed and state of linear/log, split and grid buttons 
   const [displayText, setDisplayText] = useState("linear");
+  const [displayValuesText, setDisplayValuesText] = useState("linear");
   const [splitgraphs, setSplitGraphs] = useState("split");
   const [gridText, setGridText] = useState("grid");
 
@@ -352,7 +353,10 @@ const Transponder = () => {
             {/* LINEAR/LOG BUTTON */}
             <Box>
               <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayText)}>
-                {displayText}
+                Grid: {displayText}
+              </Button>
+              <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayValuesText)}>
+                Values: {displayValuesText}
               </Button>
               {/* GRID BUTTON */}
               <Button sx={{ marginLeft: '0.5vw' }} variant="contained" onClick={() => toggleGrid(setGridText)}>
@@ -467,7 +471,10 @@ const Transponder = () => {
 
                     {/* LINEAR/LOG BUTTON */}
                     <Button variant="contained" onClick={() => toggleText(setDisplayText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
-                      {displayText}
+                      Grid: {displayText}
+                    </Button>
+                    <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayValuesText)}>
+                      Values: {displayValuesText}
                     </Button>
 
                     {/* GRID BUTTON */}
@@ -529,7 +536,7 @@ const Transponder = () => {
 
 
                       {/*OPERATION GRAPH */}
-                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={500} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
+                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={500} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
 
 
 
@@ -644,7 +651,7 @@ const Transponder = () => {
 
 
           {/* GRAPH */}
-          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
 
         </Box>
       }
@@ -673,7 +680,7 @@ const Transponder = () => {
           }}>
 
             {/*GRAPH 1 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
           </Box>
 
           <Box sx={{
@@ -681,7 +688,7 @@ const Transponder = () => {
             width: "100vw",
           }}>
             {/*GRAPH 2 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
           </Box>
 
         </Box>

@@ -177,7 +177,7 @@ async function handleSubmit(dataBuffer, setPlot, setisLoadingSubmit) {
 
 
         //convert each graph to a required format - plot to use in Linechart - contains label , colour and data(x, y_linear, y_log) for each graph  
-        plots.push(convertData(responseData[i], String(label_node).concat(label_vector, "-", label_param, " ", label_unit), colorSelector[i])[0])
+        plots.push(convertData(responseData[i], String(label_node).concat(label_vector, "-", label_param, " ", label_unit), colorSelector[i],label_unit)[0])
 
       }
 
