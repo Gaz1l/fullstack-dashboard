@@ -6,7 +6,7 @@ import { processURLs } from "../requests/requests";
 //Theme and data conversor
 import { tokens } from "../../theme";
 import { convertData } from "../../data/dataConversor";
-const colorSelector = [tokens("dark").greenAccent[500], tokens("dark").redAccent[500], tokens("dark").blueAccent[500], tokens("dark").white[500], tokens("dark").orange[500], tokens("dark").pink[500], tokens("dark").yellow[500], tokens("dark").lavander[500], tokens("dark").indigo[500], tokens("dark").purple[500]]
+const colorSelector = [tokens("dark").greenAccent[500], tokens("dark").redAccent[500], tokens("dark").blueAccent[500], tokens("dark").grey[500], tokens("dark").orange[500], tokens("dark").pink[500], tokens("dark").yellow[500], tokens("dark").lavander[500], tokens("dark").indigo[500], tokens("dark").purple[500]]
 
 //when clicking add, adds selected option to databuffer and checks for duplicates 
 function handleAdd(setdataBuffer, dataBuffer, name, transponderDirection, parameter) {
