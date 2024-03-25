@@ -13,7 +13,7 @@ import FileManager from "./scenes/filesManagement/index"
 import NetworkMap from "./scenes/networkMap/index"
 import TransponderData from './scenes/transponderData/index';
 import Settings from './scenes/settings';
-import Guide from './scenes/guide';
+//import Guide from './scenes/guide';
 import Access from './Access';
 import ErrorManager from './scenes/errorReporter';
 

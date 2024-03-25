@@ -15,7 +15,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import MapIcon from '@mui/icons-material/Map';
 import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import SettingsIcon from '@mui/icons-material/Settings';
-import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+//import HelpCenterIcon from '@mui/icons-material/HelpCenter';
 import LogoutIcon from '@mui/icons-material/Logout';
 import FeedbackIcon from '@mui/icons-material/Feedback';
 
@@ -163,14 +163,14 @@ const Sidebar = () => {
                 />
 
 
-                {/*GUIDE OPTION*/}
-                <Item
+                {/*GUIDE OPTION*                 <Item
                   title="How To Use"
                   to="/homepage/guide"
                   icon={<HelpCenterIcon />}
                   selected={selected}
                   setSelected={setSelected}
-                />
+                />/}
+
 
                 {/*Report Error*/}
                 <Item
