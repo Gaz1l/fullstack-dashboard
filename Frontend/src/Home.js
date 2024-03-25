@@ -37,7 +37,7 @@ function Home() {
             <main className="content" >
 
 
-              {/*MAIN AREA BOX AND PATHS*/}
+              {/*MAIN AREA BOX AND PATHS -                 <Route path="/guide" element={<Guide />} /> */}
               <Box style={{ paddingTop: "5vh", height: "100vh",width: "100%", overflow: "auto" }}>
                 <Routes>
 
@@ -47,7 +47,6 @@ function Home() {
                     <Route path="/network" element={<NetworkMap />} />
                     <Route path="/transponder" element={<TransponderData />} />
                     <Route path="/settings" element={<Settings />} />
-                    <Route path="/guide" element={<Guide />} />
                     <Route path="/error" element={<ErrorManager />} />
 
 
