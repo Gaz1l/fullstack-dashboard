@@ -109,14 +109,25 @@ async function handleSubmitMap(name, setIsLoadingMap, setMapToPlot, setLabelPlot
 
 //whenever a node is clicked save its values (id and name/label) and get from backend the vector options list
 async function handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
-  setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot) {
-
+  setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot,nodesPerRow) {
+    let node  
 
   if (params.nodes.length > 0) {
     //gets and sets node clicked values 
     const clickedNodeId = params.nodes[0];
     const clickedNode = nodesTemp.find(node => node.id === clickedNodeId);
+    //console.log(clickedNode.id)
+    if((clickedNode.id) < Number(nodesPerRow)+1){
     setSelectedNode(clickedNode.id - 1);
+    node = clickedNode.id - 1
+    }
+    else{
+      let row= Math.floor((clickedNode.id-1)/(Number(nodesPerRow)+1))
+      //console.log(row)
+      //console.log(clickedNode.id - 1 - 2*row)
+      setSelectedNode(clickedNode.id - 1 - 2*row);
+      node= clickedNode.id - 1 - 2*row
+    }
     setNodeName(clickedNode.label)
     //resets other options - vector and parameter 
     setSelectedVectorOption("")
@@ -124,7 +135,7 @@ async function handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
     setFirstOption([])
     setSecondOption([])
 
-    let fullUrl = process.env.REACT_APP_BASE_URL + "/files/data/network/input/" + mapPlot["filename"] + "/" + mapPlot["direction"] + "/" + (clickedNode.id - 1)
+    let fullUrl = process.env.REACT_APP_BASE_URL + "/files/data/network/input/" + mapPlot["filename"] + "/" + mapPlot["direction"] + "/" + (node)
     //fetch(`http://localhost:3500/files/data/network/input/${mapPlot["filename"]}/${mapPlot["direction"]}/${clickedNode.id - 1}`)
     fetch(fullUrl, {
       method: 'GET',

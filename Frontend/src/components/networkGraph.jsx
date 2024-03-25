@@ -60,7 +60,7 @@ export default function GraphView(mapPlot) {
   //nodes and edges received and formatted to create map 
   let nodesTemp = mapPlot["mapPlot"][0]
   let edgesTemp = mapPlot["mapPlot"][1]
-
+  let nodesPerRow = mapPlot["nodesPerRow"]
 
   //Options selected - node clicked name/label and id , vector selected and parameter selected
   const [nodeName, setNodeName] = useState("")
@@ -182,14 +182,14 @@ export default function GraphView(mapPlot) {
 
     //function to call everytime a node is clicked to save its values and get parameter options from backend 
     network.on('click', (params) => handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
-      setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot));
+      setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot,nodesPerRow));
 
     return () => {
       network.off('click', (params) => handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
         setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot));
     };
 
-  }, [navMode.mode, nodesTemp, edgesTemp, mapPlot]);
+  }, [navMode.mode, nodesTemp, edgesTemp, mapPlot,nodesPerRow]);
 
 
 

@@ -1037,6 +1037,8 @@ const getFirstInput = asyncHandler(async (req, res) => {
         let arrayx = Object.entries(x)    //converts to array 
 
         //access node 
+        //console.log(arrayx)
+        //console.log(arrayx[node])
         x = arrayx[node][1]
         arrayx = Object.entries(x)        //converts to array 
 

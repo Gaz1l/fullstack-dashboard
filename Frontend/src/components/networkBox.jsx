@@ -251,7 +251,7 @@ const Network = () => {
 
       {!isLoadingMap &&
         //Node Map Creation 
-        <GraphView mapPlot={mapPlot} filename={name} direction={selectedDirectionOption} />
+        <GraphView mapPlot={mapPlot} filename={name} direction={selectedDirectionOption} nodesPerRow={nodesPerRow} />
       }
 
 
