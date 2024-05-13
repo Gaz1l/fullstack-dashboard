@@ -34,7 +34,7 @@ import TripleButton from './button/tripleButton';
 
 //Handlers
 import { handlePopUpNetworkMap, handlePopUpOperation } from '../features/popup/handlePopUp';
-import { toggleText, toggleSplit, toggleGrid, handleRemoveElement, toggleDown, toggleUp } from '../features/toggles/handleToggle';
+import { toggleText, toggleSplit, toggleGrid, handleRemoveElement, toggleDown, toggleUp, toggleRound } from '../features/toggles/handleToggle';
 import { handleAdd, handleReset, handleSubmit } from '../features/buttons/handleClicksMap';
 import { handleFirstInputChange } from '../features/dropdown/handleMapInput';
 import { handleNodeClick } from '../features/networkmap/handleMapClicks';
@@ -93,7 +93,7 @@ export default function GraphView(mapPlot) {
   const [displayText, setDisplayText] = useState("linear");
   const [displayValuesText, setDisplayValuesText] = useState("linear");
   const [gridText, setGridText] = useState("grid");
-
+  const [roundText, setRoundText] = useState("no round");
 
   const [plot, setPlot] = useState([]);  //Plots to use in Linechart - contains label , colour and data(x, y_linear, y_log) for each plot 
   const [opData, setOpData] = useState([]); //operation data to plot in Linechart - contains label , colour and data(x, y_linear, y_log) 
@@ -182,14 +182,14 @@ export default function GraphView(mapPlot) {
 
     //function to call everytime a node is clicked to save its values and get parameter options from backend 
     network.on('click', (params) => handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
-      setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot,nodesPerRow));
+      setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot, nodesPerRow));
 
     return () => {
       network.off('click', (params) => handleNodeClick(params, nodesTemp, setNodeName, setSelectedNode,
         setSelectedVectorOption, setSelectedParameterOption, setFirstOption, setSecondOption, mapPlot));
     };
 
-  }, [navMode.mode, nodesTemp, edgesTemp, mapPlot,nodesPerRow]);
+  }, [navMode.mode, nodesTemp, edgesTemp, mapPlot, nodesPerRow]);
 
 
 
@@ -327,8 +327,8 @@ export default function GraphView(mapPlot) {
               Grid: {displayText}
             </Button>
             <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayValuesText)}>
-                Values: {displayValuesText}
-              </Button>
+              Values: {displayValuesText}
+            </Button>
             {/* GRID BUTTON */}
             <Button sx={{ marginLeft: '0.5vw', marginRight: '3vw' }} variant="contained" onClick={() => toggleGrid(setGridText)}>
               {gridText}
@@ -382,13 +382,13 @@ export default function GraphView(mapPlot) {
                     {/* POPOVER CLOSE BUTTON - resets flags  */}
                     <Button onClick={() => handleClosePopNetOperation(setIsLoadingOperation, setAnchorOp, setSelectedGraph1, setSelectedGraph2, setOperationGraph)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }} variant="contained" size="medium">Close</Button>
 
-            {/* LINEAR/LOG BUTTON */}
-            <Button variant="contained" onClick={() => toggleText(setDisplayText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
-              Grid: {displayText}
-            </Button>
-            <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayValuesText)}>
-                Values: {displayValuesText}
-              </Button>
+                    {/* LINEAR/LOG BUTTON */}
+                    <Button variant="contained" onClick={() => toggleText(setDisplayText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
+                      Grid: {displayText}
+                    </Button>
+                    <Button sx={{ marginLeft: '0.5vw', marginRight: '1vw' }} variant="contained" onClick={() => toggleText(setDisplayValuesText)}>
+                      Values: {displayValuesText}
+                    </Button>
 
 
                     {/* GRID BUTTON */}
@@ -435,6 +435,10 @@ export default function GraphView(mapPlot) {
                       Download Chart
                     </Button>
 
+                    {/* ROUND/NOROUND BUTTON */}
+                    <Button variant="contained" onClick={() => toggleRound(setRoundText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
+                      {roundText}
+                    </Button>
 
                     {/* OPERATION GRAPH */}
                     <Box sx={{
@@ -444,7 +448,7 @@ export default function GraphView(mapPlot) {
 
 
                       {/*OPERATION GRAPH */}
-                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={450} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
+                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={450} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} round={roundText} />
 
 
 
@@ -510,6 +514,10 @@ export default function GraphView(mapPlot) {
               <Button sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }} onClick={() => toggleSplit(setSplitGraphs)} variant="contained" size="medium">{splitgraphs} Graphs</Button>
             }
 
+            {/* ROUND/NOROUND BUTTON */}
+            <Button variant="contained" onClick={() => toggleRound(setRoundText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
+              {roundText}
+            </Button>
 
             <Box
               sx={{
@@ -564,7 +572,7 @@ export default function GraphView(mapPlot) {
 
 
                 {/* GRAPH */}
-                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} round={roundText} />
 
 
 
@@ -587,7 +595,7 @@ export default function GraphView(mapPlot) {
                   width: "100vw"
                 }}>
                   {/*GRAPH 1 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} round={roundText} />
                 </Box>
 
 
@@ -596,7 +604,7 @@ export default function GraphView(mapPlot) {
                   width: "100vw"
                 }}>
                   {/*GRAPH 2 */}
-                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+                  <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={200} mLeft={290} xLegends={-285} yLegends={labelPos} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} round={roundText} />
 
                 </Box>
 

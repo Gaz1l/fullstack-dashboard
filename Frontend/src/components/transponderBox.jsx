@@ -40,7 +40,7 @@ import { handleAdd, handleReset, handleSubmit } from "../features/buttons/handle
 import { handleTransponderInputChange } from "../features/dropdown/handleTransponderInput";
 import { handlePopOverTrans, handlePopOverOperation, handleClosePopNetOperation } from '../features/popover/handlePopover';
 import { submitOperation } from '../features/buttons/handleOperation';
-import { toggleText, toggleSplit, toggleGrid, handleRemoveElement, toggleDown, toggleUp } from '../features/toggles/handleToggle';
+import { toggleText, toggleSplit, toggleGrid, handleRemoveElement, toggleDown, toggleUp, toggleRound } from '../features/toggles/handleToggle';
 import { handlePopUpTransponderBox, handlePopUpOperation } from '../features/popup/handlePopUp';
 
 //Download graph
@@ -103,7 +103,7 @@ const Transponder = () => {
   const [displayValuesText, setDisplayValuesText] = useState("linear");
   const [splitgraphs, setSplitGraphs] = useState("split");
   const [gridText, setGridText] = useState("grid");
-
+  const [roundText, setRoundText] = useState("no round");
 
 
   //theme and colors
@@ -522,7 +522,10 @@ const Transponder = () => {
                       Download Graph
                     </Button>
 
-
+                    {/* ROUND/NOROUND BUTTON */}
+                    <Button variant="contained" onClick={() => toggleRound(setRoundText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
+                      {roundText}
+                    </Button>
 
                     {/* OPERATION GRAPH */}
                     <Box sx={{
@@ -536,7 +539,7 @@ const Transponder = () => {
 
 
                       {/*OPERATION GRAPH */}
-                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={500} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} />
+                      <LineChart isDashboard={true} dataToPlot={opData} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={150} mLeft={120} xLegends={-190} yLegends={500} itemW={130} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={operationGraph} round={roundText} />
 
 
 
@@ -575,6 +578,10 @@ const Transponder = () => {
             }
 
 
+            {/* ROUND/NOROUND BUTTON */}
+            <Button variant="contained" onClick={() => toggleRound(setRoundText)} sx={{ marginLeft: '0.25vw', marginRight: '0.25vw' }}>
+              {roundText}
+            </Button>
 
 
 
@@ -651,7 +658,7 @@ const Transponder = () => {
 
 
           {/* GRAPH */}
-          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+          <LineChart isDashboard={true} dataToPlot={plot} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} round={roundText} />
 
         </Box>
       }
@@ -680,7 +687,7 @@ const Transponder = () => {
           }}>
 
             {/*GRAPH 1 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[0]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} round={roundText} />
           </Box>
 
           <Box sx={{
@@ -688,7 +695,7 @@ const Transponder = () => {
             width: "100vw",
           }}>
             {/*GRAPH 2 */}
-            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} />
+            <LineChart isDashboard={true} dataToPlot={[plot[1]]} log_linear={displayText} log_linear_values={displayValuesText} gridValue={gridText} mRight={300} mLeft={240} xLegends={-235} yLegends={labelPos} itemW={10} limitFlag={limitFlag} limitValue={limitGraph} titleGraph={"Parameter Values"} round={roundText} />
           </Box>
 
         </Box>

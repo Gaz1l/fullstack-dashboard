@@ -6,7 +6,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 
 // Function to format numbers in engineering notation
-const formatEngineeringNotation = (value) => {
+const formatNot = (value) => {
 
   const decimalMatch = ('' + value).match(/(?:\.(\d+))?(?:[eE]([+-]?\d+))?$/);
 
@@ -24,8 +24,42 @@ const formatEngineeringNotation = (value) => {
   return value;
 };
 
+const roundFreq = (num) => {
+  // Check if num is not a number
+  if (isNaN(num)) {
+    return null;
+  }
+  const integerPart = Math.floor(num);
+  const decimalPart = num - integerPart;
 
-const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_values, gridValue, mRight, mLeft, itemW, xLegends, yLegends, limitFlag, limitValue, titleGraph }) => {
+
+  const roundedDecimal = parseFloat(decimalPart.toFixed(3));
+
+  const roundedNum = integerPart + roundedDecimal;
+
+
+  return roundedNum;
+}
+
+const roundNum = (num) => {
+
+  const integerPart = Math.floor(num);
+  const decimalPart = num - integerPart;
+  let roundedDecimal
+  if (integerPart !== 0) {
+    roundedDecimal = parseFloat(decimalPart.toFixed(2));
+  }
+  else {
+    roundedDecimal = parseFloat(decimalPart.toPrecision(2));
+  }
+  const roundedNum = integerPart + roundedDecimal;
+
+
+  return roundedNum;
+}
+
+
+const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_values, gridValue, mRight, mLeft, itemW, xLegends, yLegends, limitFlag, limitValue, titleGraph, round }) => {
 
   //Use theme and colors 
   const theme = useTheme();
@@ -52,6 +86,8 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_val
 
     legends = [
       {
+
+
         anchor: "left",
         direction: "column",
         justify: false,
@@ -96,14 +132,14 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_val
     ]
 
   }
-console.log(dataToPlot)
+  console.log(dataToPlot)
   //Checks if linear or logaritmic scale and if data is valid to be plotted 
   for (let j = 0; j < dataToPlot.length; j++) {
 
     let bufferLin = []
-    let bufferLog = [] 
-    let tempLin = [] 
-    let tempLog = [] 
+    let bufferLog = []
+    let tempLin = []
+    let tempLog = []
 
     //Buffer in required format without NaN and Infinity  
     for (let a = 0; a < dataToPlot[j]["data"].length; a++) {
@@ -112,19 +148,19 @@ console.log(dataToPlot)
         x: '',
         y: '',
       }
-      
+
       tempLog = {
         x: '',
         y: '',
       }
 
-      if (dataToPlot[j]["data"][a]["y_linear"] !== "NaN" && dataToPlot[j]["data"][a]["y_linear"] !== "Infinity" &&dataToPlot[j]["data"][a]["y_linear"] !== "-Infinity" && isFinite(dataToPlot[j]["data"][a]["y_linear"])){
+      if (dataToPlot[j]["data"][a]["y_linear"] !== "NaN" && dataToPlot[j]["data"][a]["y_linear"] !== "Infinity" && dataToPlot[j]["data"][a]["y_linear"] !== "-Infinity" && isFinite(dataToPlot[j]["data"][a]["y_linear"])) {
         tempLin['y'] = dataToPlot[j]["data"][a]["y_linear"]
         tempLin['x'] = dataToPlot[j]["data"][a]["x"]
         bufferLin.push(tempLin)
       }
-      if (dataToPlot[j]["data"][a]["y_log"] !== "NaN" && dataToPlot[j]["data"][a]["y_log"] !== "Infinity" &&dataToPlot[j]["data"][a]["y_log"] !== "-Infinity" && isFinite(dataToPlot[j]["data"][a]["y_log"])){
-        tempLog['y'] = dataToPlot[j]["data"][a]["y_log"] 
+      if (dataToPlot[j]["data"][a]["y_log"] !== "NaN" && dataToPlot[j]["data"][a]["y_log"] !== "Infinity" && dataToPlot[j]["data"][a]["y_log"] !== "-Infinity" && isFinite(dataToPlot[j]["data"][a]["y_log"])) {
+        tempLog['y'] = dataToPlot[j]["data"][a]["y_log"]
         tempLog['x'] = dataToPlot[j]["data"][a]["x"]
         bufferLog.push(tempLog)
       }
@@ -133,7 +169,7 @@ console.log(dataToPlot)
 
 
 
-      
+
     }
 
     console.log(bufferLin)
@@ -202,8 +238,15 @@ console.log(dataToPlot)
     if (invalid && log_linear === "log")
       continue
 
+    //rounding 
+    if (round === "round") {
+      for (let i = 0; i < plot.length; i++) {
 
+        plot[i]['x'] = roundFreq(plot[i]['x'])
+        plot[i]['y'] = roundNum(plot[i]['y'])
 
+      }
+    }
 
     //console.log(buffer)
     console.log(plot)
@@ -238,6 +281,7 @@ console.log(dataToPlot)
           },
           legend: {
             text: {
+              fontSize: 20,
               fill: colors.grey[100],
             },
           },
@@ -247,12 +291,14 @@ console.log(dataToPlot)
               strokeWidth: 1,
             },
             text: {
+
               fill: colors.grey[100],
             },
           },
         },
         legends: {
           text: {
+            fontSize: 15,
             fill: colors.grey[100],
           },
         },
@@ -302,7 +348,7 @@ console.log(dataToPlot)
         legend: titleGraph, // added
         legendOffset: -80,
         legendPosition: "middle",
-        format: (value) => formatEngineeringNotation(value)
+        format: (value) => formatNot(value)
 
       }}
       //grid 

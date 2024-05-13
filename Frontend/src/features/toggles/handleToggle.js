@@ -37,5 +37,11 @@ function toggleDown(setValue,value) {
   setValue(value+10);
 };
 
+//toggle rounding options 
+function toggleRound(setRoundText) {
+  setRoundText((prevRoundText) =>
+    prevRoundText === "round" ? "no round" : "round"
+  );
+};
 
-export { toggleText, toggleSplit, toggleGrid, handleRemoveElement,toggleUp,toggleDown }
+export { toggleText, toggleSplit, toggleGrid, handleRemoveElement,toggleUp,toggleDown,toggleRound }
