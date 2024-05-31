@@ -898,6 +898,7 @@ const getNetworkData = asyncHandler(async (req, res) => {
         z = arrayz[1][1]["Central_Samples_MHz"]
         for (let i = 0; i < z.length; i++) {
             z[i] /= 1000000;
+            
         }
 
 
@@ -923,6 +924,7 @@ const getNetworkData = asyncHandler(async (req, res) => {
         }
         else if (vector === "InVector") {
             y = arrayx[0][1]["InVector"][parameter]
+
         }
         else if (vector === "TFs") {
             y = arrayx[0][1]["TFs"][parameter]

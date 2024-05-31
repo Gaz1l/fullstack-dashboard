@@ -9,13 +9,13 @@ export const convertData = (dataToConvert, filename, colorselected,label_unit) =
   let linearData = []
 
   //logaritmic conversion 
-  console.log(label_unit)
+  //console.log(label_unit)
   if(label_unit==="(dBm)"){
     logarithmicData = valuesToConvert;
     linearData = valuesToConvert.map(value => Math.pow(10,value/10));
   }
   else if(label_unit==="(dB)"){
-    console.log("boas")
+   // console.log("boas")
     logarithmicData = valuesToConvert;
     linearData = valuesToConvert;
   }
@@ -40,7 +40,7 @@ export const convertData = (dataToConvert, filename, colorselected,label_unit) =
     buffer.push(temp)
   }
 
-  console.log(buffer)
+  //console.log(buffer)
   //data into required format to plot 
   let dataConverted = [{
     id: filename,
@@ -157,7 +157,7 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
             to: {
               enabled: true,
               type: "arrow",
-              scaleFactor: 0.5
+              scaleFactor: 1.0
             },
           },
 
@@ -248,7 +248,7 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
             to: {
               enabled: true,
               type: "arrow",
-              scaleFactor: 0.5,
+              scaleFactor: 1.0,
             },
           },
 
@@ -287,7 +287,9 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
         color: "cyan",
         x: new_x,
         y: new_y,
-
+        font: 
+           '15px verdana black'
+        ,
         layout: {
           hierarchical: false // Disable automatic layout
         },
@@ -314,6 +316,7 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
         label: path_data[i],
         title: label_data[i],
         shape: "custom",
+
         ctxRenderer: ({ ctx, id, x, y, state: { selected, hover }, style }) => {
 
           //triangle renderer 
@@ -340,7 +343,7 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
             ctx.stroke();
             ctx.restore();
 
-            ctx.font = "normal 13px sans-serif";
+            ctx.font = '14px verdana';
             ctx.fillStyle = "black";
             ctx.fillText(path_data[i], x - r - 20, y + 60);
           };
@@ -352,7 +355,6 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
         color: color,
         x: new_x,
         y: new_y,
-
         layout: {
           hierarchical: false // Disable automatic layout
         },
@@ -376,12 +378,14 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
 
 
       tempN = {
+        
         id: node_tot + 1,
         label: path_data[i],
         title: label_data[i],
         shape: "custom",
         ctxRenderer: ({ ctx, id, x, y, state: { selected, hover }, style }) => {
-          //triangle renderer - opposite 
+          //triangle renderer - opposite
+
           const r = style.size * -1;
           const drawNode = () => {
 
@@ -405,7 +409,7 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
             ctx.stroke();
             ctx.restore();
 
-            ctx.font = "normal 13px sans-serif";
+            ctx.font = '14px verdana';
             ctx.fillStyle = "black";
             ctx.fillText(path_data[i], x + r - 20, y + 60);
           };
@@ -415,6 +419,7 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
           };
         },
         color: color,
+
         x: new_x,
         y: new_y,
 
@@ -439,7 +444,9 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
         color: "#70d8bd",
         x: new_x,
         y: new_y,
-
+        font: 
+        '15px verdana black'
+        ,
         layout: {
           hierarchical: false // Disable automatic layout
         },
@@ -497,7 +504,7 @@ export const convertMapData = (path_data, label_data, node_type, nodesPerRow) =>
           to: {
             enabled: true,
             type: "arrow",
-            scaleFactor: 0.5,
+            scaleFactor: 1.0,
           },
         },
 

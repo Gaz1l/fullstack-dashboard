@@ -199,7 +199,7 @@ export default function GraphView(mapPlot) {
 
     <Box
       sx={{
-        display: "grid",
+        display: "grid"
       }}
     >
 

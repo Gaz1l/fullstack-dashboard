@@ -79,8 +79,8 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_val
     gridflag = true
 
 
-  console.log(log_linear)
-  console.log(log_linear_values)
+  //console.log(log_linear)
+  //console.log(log_linear_values)
   //Define legend if not operation graph 
   if (titleGraph === "Parameter Values") {
 
@@ -132,7 +132,7 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_val
     ]
 
   }
-  console.log(dataToPlot)
+  //console.log(dataToPlot)
   //Checks if linear or logaritmic scale and if data is valid to be plotted 
   for (let j = 0; j < dataToPlot.length; j++) {
 
@@ -172,7 +172,7 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_val
 
     }
 
-    console.log(bufferLin)
+    //console.log(bufferLin)
     //console.log(buffer)
     invalid = false
     let plot = []
@@ -249,7 +249,7 @@ const LineChart = ({ isDashboard = false, dataToPlot, log_linear, log_linear_val
     }
 
     //console.log(buffer)
-    console.log(plot)
+    //console.log(plot)
     //Valid data added 
     let plotBuffer = [{
       id: dataToPlot[j]["id"],
